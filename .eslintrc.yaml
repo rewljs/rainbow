@@ -1,0 +1,38 @@
+env:
+  browser: true
+  commonjs: true
+  es2021: true
+  node: true
+
+ignorePatterns:
+  - lib
+
+parser: '@typescript-eslint/parser'
+
+parserOptions:
+  ecmaVersion: latest
+
+plugins:
+  - ava
+  - '@typescript-eslint'
+
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:ava/recommended
+
+rules:
+  # Turn off rules
+  '@typescript-eslint/no-empty': off
+  '@typescript-eslint/no-var-requires': off
+
+  # Set some rules from error to warining
+  '@typescript-eslint/no-empty-function': warn
+  '@typescript-eslint/no-unused-vars': warn
+  prefer-const: warn
+
+  # Coding styles
+  indent: [warn, 2, { SwitchCase: 1 }]
+  semi: [warn, never]
+  quotes: [warn, single]
+  comma-dangle: [warn, always-multiline]
