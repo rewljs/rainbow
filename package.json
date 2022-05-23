@@ -13,9 +13,9 @@
   "bugs": {
     "url": "https://github.com/rewljs/rainbow/issues"
   },
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node build.js",
     "test": "c8 ava"
   },
   "devDependencies": {
@@ -23,6 +23,7 @@
     "@typescript-eslint/parser": "^5.25.0",
     "ava": "^4.2.0",
     "c8": "^7.11.3",
+    "esbuild": "^0.14.39",
     "esbuild-register": "^3.3.2",
     "eslint": "^8.16.0",
     "eslint-plugin-ava": "^13.2.0",

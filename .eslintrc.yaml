@@ -25,6 +25,7 @@ rules:
   # Turn off rules
   '@typescript-eslint/no-empty': off
   '@typescript-eslint/no-var-requires': off
+  '@typescript-eslint/no-namespace': off
 
   # Set some rules from error to warining
   '@typescript-eslint/no-empty-function': warn
