@@ -1,13 +1,13 @@
-import type { Color } from './types'
+import type { ColorTuple } from './types'
 
 /**
  * Convert HSL color to RGB color.
  * @param h Hue (0 - 360)
- * @param s Saturation (0 - 100), default to 100
- * @param v Value (or Brightness) (0 - 100), default to 100
+ * @param s Saturation (0 - 100), default to 80
+ * @param v Value (or Brightness) (0 - 100) default to 95
  * @return Red, Green, Blue value as integer (0 - 255)
  */
-const hsv2rgb = (h: number, s = 100, v = 100): Color => {
+const hsv2rgb = (h: number, s = 80, v = 95): ColorTuple => {
   v = v / 100
 
   if (s === 0) {
@@ -45,7 +45,7 @@ const hsv2rgb = (h: number, s = 100, v = 100): Color => {
   }
 
   // To be identical with the behavior of Adobe Photoshop
-  return rgb.map(value => Math.round((value + m) * 255)) as Color
+  return rgb.map(value => Math.round((value + m) * 255)) as ColorTuple
 }
 
 export default hsv2rgb

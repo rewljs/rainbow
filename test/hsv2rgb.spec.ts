@@ -1,9 +1,9 @@
 import test from 'ava'
 import hsv2rgb from '../src/hsv2rgb'
-import type { Color } from '../src/types'
+import type { ColorTuple } from '../src/types'
 
 const transform = test.macro({
-  exec(t, input: Color, expected: Color) {
+  exec(t, input: ColorTuple, expected: ColorTuple) {
     t.deepEqual(hsv2rgb(...input), expected)
   },
   title(provided = '', input) {

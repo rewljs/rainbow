@@ -1,24 +1,50 @@
-import type { Color } from './types'
+import type { ColorTuple } from './types'
 
-interface Segment {
+interface SegmentWithCustomEscape {
+  content: string
+  escape: string
+}
+
+interface SegmentWithOptions {
   content: string
   bold?: boolean
   italic?: boolean
   underline?: boolean
   invert?: boolean
-  color?: Color
-  background?: Color
+  color?: ColorTuple
+  background?: ColorTuple
 }
 
-const render = (s: Segment): string => {
-  let ctrl = '\x1b['
-  if (s.bold) ctrl += '1;'
-  if (s.italic) ctrl += '3;'
-  if (s.underline) ctrl += '4;'
-  if (s.invert) ctrl += '7;'
-  if (s.color) ctrl += `38;2;${s.color.join(';')};`
-  if (s.background) ctrl += `48;2;${s.background.join(';')};`
-  ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'
+interface Segment {
+  content: string
+  escape?: string
+  bold?: boolean
+  italic?: boolean
+  underline?: boolean
+  invert?: boolean
+  color?: ColorTuple
+  background?: ColorTuple
+}
+
+type IRender = {
+  (s: SegmentWithCustomEscape): string
+  (s: SegmentWithOptions): string
+}
+
+const render: IRender = (s: Segment): string => {
+  let ctrl: string
+
+  if (s.escape) ctrl = s.escape
+  else {
+    ctrl = '\x1b['
+    if (s.bold) ctrl += '1;'
+    if (s.italic) ctrl += '3;'
+    if (s.underline) ctrl += '4;'
+    if (s.invert) ctrl += '7;'
+    if (s.color) ctrl += `38;2;${s.color.join(';')};`
+    if (s.background) ctrl += `48;2;${s.background.join(';')};`
+    ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'
+  }
 
   // eslint-disable-next-line no-control-regex
   const content = s.content.replace(/\x1b\[0m(?!\x1b|$)/g, `\x1b[0m${ctrl}`)

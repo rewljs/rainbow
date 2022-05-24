@@ -1,1 +1,1 @@
-export type Color = [number, number, number]
+export type ColorTuple = [number, number, number]
