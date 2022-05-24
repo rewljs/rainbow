@@ -28,8 +28,8 @@ test(transform, [162, 66, 95], [82, 242, 194])
 test(transform, [15, 68, 55], [140, 69, 45])
 test(transform, [271, 67, 86], [148, 72, 219])
 
-test('Red but 99% saturatiion', transform, [0, 100, 99], [252, 0, 0])
-test('Red but 99% value', transform, [0, 99, 100], [255, 3, 3])
+test('Red but with 99% saturatiion', transform, [0, 100, 99], [252, 0, 0])
+test('Red but with 99% value', transform, [0, 99, 100], [255, 3, 3])
 
 test('Treat h = 360 as h = 0', t => {
   const rgb = hsv2rgb(360, 100, 100)

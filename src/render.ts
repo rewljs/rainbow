@@ -58,10 +58,10 @@ const render = (s: Segment): string => {
   if (s.hidden) ctrl += '8;'
   if (s.strikethrough) ctrl += '9;'
 
-  if (typeof s.color == 'string') ctrl += `38;${s.color};`
+  if (typeof s.color === 'string') ctrl += `38;${s.color};`
   else if (s.color) ctrl += `38;2;${s.color.join(';')};`
 
-  if (typeof s.background == 'string') ctrl += `48;${s.background};`
+  if (typeof s.background === 'string') ctrl += `48;${s.background};`
   else if (s.background) ctrl += `48;2;${s.background.join(';')};`
 
   ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'
@@ -77,4 +77,4 @@ const render = (s: Segment): string => {
 
 export default render
 export { segmentStyles, expandStyle }
-export type { SegmentOptions, SegmentStyles }
+export type { SegmentOptions, SegmentStyles, SegmentStylesDeduped }

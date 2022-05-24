@@ -1,5 +1,6 @@
 import test from 'ava'
-import render from '../src/render'
+import render, { expandStyle } from '../src/render'
+import type { SegmentStyles, SegmentStylesDeduped } from '../src/render'
 
 test('Render orange text', t => {
   const rendered = render({
@@ -7,7 +8,14 @@ test('Render orange text', t => {
     color: [255, 130, 30],
   })
   t.is(rendered, '\x1b[38;2;255;130;30mtext\x1b[0m')
-  t.log(rendered)
+})
+
+test('Render orange text with direct color code', t => {
+  const rendered = render({
+    content: 'text',
+    color: '2;255;130;30',
+  })
+  t.is(rendered, '\x1b[38;2;255;130;30mtext\x1b[0m')
 })
 
 test('Render orange text inside blue text', t => {
@@ -19,7 +27,6 @@ test('Render orange text inside blue text', t => {
     content: `outside ${inside} outside`,
     color: [70, 200, 255],
   })
-  t.log(outside)
   t.is(outside, '\x1b[38;2;70;200;255moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m outside\x1b[0m')
 })
 
@@ -32,7 +39,6 @@ test('Render two orange texts inside blue text', t => {
     content: `outside ${inside} outside ${inside} outside`,
     color: [70, 200, 255],
   })
-  t.log(outside)
   t.is(outside, '\x1b[38;2;70;200;255moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m outside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m outside\x1b[0m')
 })
 
@@ -49,7 +55,6 @@ test('Render orange text inside blue text inside pink text', t => {
     content: `outside ${middle} outside`,
     color: [245, 130, 185],
   })
-  t.log(outside)
   t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
@@ -66,7 +71,6 @@ test('Render orange text left to blue text inside pink text', t => {
     content: `outside ${middle} outside`,
     color: [245, 130, 185],
   })
-  t.log(outside)
   t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
@@ -83,7 +87,6 @@ test('Render orange text right to blue text inside pink text', t => {
     content: `outside ${middle} outside`,
     color: [245, 130, 185],
   })
-  t.log(outside)
   t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
@@ -93,7 +96,14 @@ test('Render text with orange background', t => {
     background: [255, 130, 30],
   })
   t.is(rendered, '\x1b[48;2;255;130;30mtext\x1b[0m')
-  t.log(rendered)
+})
+
+test('Render text with orange background with direct color code', t => {
+  const rendered = render({
+    content: 'text',
+    background: '2;255;130;30',
+  })
+  t.is(rendered, '\x1b[48;2;255;130;30mtext\x1b[0m')
 })
 
 test('Render bold text', t => {
@@ -102,7 +112,6 @@ test('Render bold text', t => {
     bold: true,
   })
   t.is(rendered, '\x1b[1mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render dim text', t => {
@@ -111,7 +120,6 @@ test('Render dim text', t => {
     dim: true,
   })
   t.is(rendered, '\x1b[2mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render italic text', t => {
@@ -120,7 +128,6 @@ test('Render italic text', t => {
     italic: true,
   })
   t.is(rendered, '\x1b[3mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render underline text', t => {
@@ -129,7 +136,6 @@ test('Render underline text', t => {
     underline: true,
   })
   t.is(rendered, '\x1b[4mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render blink text', t => {
@@ -138,7 +144,6 @@ test('Render blink text', t => {
     blink: true,
   })
   t.is(rendered, '\x1b[5mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render inverted text', t => {
@@ -147,7 +152,6 @@ test('Render inverted text', t => {
     inverse: true,
   })
   t.is(rendered, '\x1b[7mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render hidden text', t => {
@@ -156,7 +160,6 @@ test('Render hidden text', t => {
     hidden: true,
   })
   t.is(rendered, '\x1b[8mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render strikethrough text', t => {
@@ -165,7 +168,6 @@ test('Render strikethrough text', t => {
     strikethrough: true,
   })
   t.is(rendered, '\x1b[9mtext\x1b[0m')
-  t.log('\x1b[0m' + rendered)
 })
 
 test('Render pink bold italic underline text with dark purple background', t => {
@@ -177,7 +179,6 @@ test('Render pink bold italic underline text with dark purple background', t => 
     color: [245, 130, 185],
     background: [70, 20, 150],
   })
-  t.log(rendered)
   t.is(rendered, '\x1b[1;3;4;38;2;245;130;185;48;2;70;20;150mtext\x1b[0m')
 })
 
@@ -191,6 +192,20 @@ test('Invert text color and background color in the middle', t => {
     color: [255, 130, 30],
     background: [20, 50, 75],
   })
-  t.log(outside)
   t.is(outside, '\x1b[38;2;255;130;30;48;2;20;50;75moutside \x1b[7minside\x1b[0m\x1b[38;2;255;130;30;48;2;20;50;75m outside\x1b[0m')
 })
+
+const testExpandStyle = test.macro({
+  exec(t, input: SegmentStyles, expected: SegmentStylesDeduped) {
+    t.is(expandStyle(input), expected)
+  },
+  title(_, input, expected) {
+    return `Expand segment style: ${input} -> ${expected}`
+  },
+})
+
+test(testExpandStyle, 'b', 'bold')
+test(testExpandStyle, 'i', 'italic')
+test(testExpandStyle, 'u', 'underline')
+test(testExpandStyle, 's', 'strikethrough')
+test(testExpandStyle, 'bold', 'bold')
