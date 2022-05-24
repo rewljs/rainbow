@@ -7,7 +7,7 @@ const transform = test.macro({
     t.deepEqual(hsv2rgb(...input), expected)
   },
   title(provided = '', input) {
-    return `HSV to RGB: ${provided || `HSV(${input.join(', ')})`}`
+    return `${provided || `HSV(${input.join(', ')})`}`
   },
 })
 
@@ -31,7 +31,7 @@ test(transform, [271, 67, 86], [148, 72, 219])
 test('Red but 99% saturatiion', transform, [0, 100, 99], [252, 0, 0])
 test('Red but 99% value', transform, [0, 99, 100], [255, 3, 3])
 
-test('HSV to RGB: Treat h = 360 as h = 0', t => {
+test('Treat h = 360 as h = 0', t => {
   const rgb = hsv2rgb(360, 100, 100)
   t.deepEqual(rgb, [255, 0, 0])
 })

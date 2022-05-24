@@ -13,9 +13,13 @@
   "bugs": {
     "url": "https://github.com/rewljs/rainbow/issues"
   },
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "main": "index.js",
   "scripts": {
-    "build": "tsc && node build.js",
+    "build": "tsc",
     "test": "c8 ava"
   },
   "devDependencies": {
