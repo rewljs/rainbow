@@ -1,7 +1,20 @@
 import test from 'ava'
-import { Context } from '../src/index'
+import r from '../src/index'
 
-test('Test', t => {
-  t.log(new Context().blue())
+test('Show colors', t => {
+  t.log(
+    r.red('text'),
+    r.orange('text'),
+    r.yellow('text'),
+    r.olive('text'),
+    r.green('text'),
+    r.mint('text'),
+    r.cyan('text'),
+    r.sky('text'),
+    r.blue('text'),
+    r.purple('text'),
+    r.violet('text'),
+    r.pink('text'),
+  )
   t.pass()
 })

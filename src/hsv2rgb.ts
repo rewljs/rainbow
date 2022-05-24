@@ -3,11 +3,11 @@ import type { ColorTuple } from './types'
 /**
  * Convert HSL color to RGB color.
  * @param h Hue (0 - 360)
- * @param s Saturation (0 - 100), default to 80
- * @param v Value (or Brightness) (0 - 100) default to 95
+ * @param s Saturation (0 - 100)
+ * @param v Value (or Brightness) (0 - 100)
  * @return Red, Green, Blue value as integer (0 - 255)
  */
-const hsv2rgb = (h: number, s = 80, v = 95): ColorTuple => {
+const hsv2rgb = (h: number, s: number, v: number): ColorTuple => {
   v = v / 100
 
   if (s === 0) {

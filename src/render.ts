@@ -15,11 +15,11 @@ const segmentStyles = [
   's',
 ] as const
 
-type SegmentStylesWithShorthands = typeof segmentStyles[number]
+type SegmentStyles = typeof segmentStyles[number]
 
-type SegmentStyles = Exclude<SegmentStylesWithShorthands, 'b' | 'i' | 'u' | 's'>
+type SegmentStylesDeduped = Exclude<SegmentStyles, 'b' | 'i' | 'u' | 's'>
 
-const expandShorthand = (style: SegmentStylesWithShorthands): SegmentStyles => {
+const expandStyle = (style: SegmentStyles): SegmentStylesDeduped => {
   switch (style) {
     case 'b':
       return 'bold'
@@ -33,7 +33,7 @@ const expandShorthand = (style: SegmentStylesWithShorthands): SegmentStyles => {
   return style
 }
 
-type SegmentStylesOptions = { [S in SegmentStyles]: boolean }
+type SegmentStylesOptions = { [S in SegmentStylesDeduped]: boolean }
 
 interface SegmentOptions extends Partial<SegmentStylesOptions> {
   color?: ColorTuple | string
@@ -76,5 +76,5 @@ const render = (s: Segment): string => {
 }
 
 export default render
-export { segmentStyles, expandShorthand }
-export type { SegmentOptions, SegmentStylesWithShorthands, SegmentStyles }
+export { segmentStyles, expandStyle }
+export type { SegmentOptions, SegmentStyles }

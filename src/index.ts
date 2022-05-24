@@ -1,10 +1,6 @@
 import hsv2rgb from './hsv2rgb'
-import render, { segmentStyles, expandShorthand } from './render'
-import type {
-  SegmentOptions,
-  SegmentStylesWithShorthands,
-  SegmentStyles,
-} from './render'
+import render, { segmentStyles, expandStyle } from './render'
+import type { SegmentOptions, SegmentStyles } from './render'
 import Colors, { presetColors } from './colors'
 import type { PresetColors } from './colors'
 
@@ -14,7 +10,7 @@ interface RenderChain {
 }
 
 interface Context extends
-  Record<SegmentStylesWithShorthands, RenderChain>,
+  Record<SegmentStyles, RenderChain>,
   Record<PresetColors, RenderChain> {
   options: SegmentOptions
 }
@@ -36,22 +32,45 @@ class Context {
     return render({ ...this.options, content })
   }
 
-  private createStyleMethod(style: SegmentStylesWithShorthands): void {
-    this[style] = (content?: string) => {
-      const expanded = expandShorthand(style)
+  private createStyleMethod(style: SegmentStyles): void {
+    this[style] = ((content?: string) => {
+      const expanded = expandStyle(style)
       this.options[expanded] = true
       if (content) return this.render(content)
       return this
-    }
+    }) as RenderChain
   }
 
   private createColorMethod(color: PresetColors): void {
-    this[color] = (content?: string) => {
+    this[color] = ((content?: string) => {
       this.options.color = Colors[color]
       if (content) return this.render(content)
       return this
-    }
+    }) as RenderChain
   }
 }
 
-export { Context }
+interface RainbowConstructed extends
+  Record<SegmentStyles, RenderChain>,
+  Record<PresetColors, RenderChain> {}
+
+const Rainbow: Record<string, unknown> = {}
+
+segmentStyles.forEach(style => {
+  Rainbow[style] = (content?: string) => {
+    const expanded = expandStyle(style)
+    const ctx = new Context({ [expanded]: true })
+    if (content) return ctx.render(content)
+    else return ctx
+  }
+})
+
+presetColors.forEach(color => {
+  Rainbow[color] = (content?: string) => {
+    const ctx = new Context({ color: Colors[color] })
+    if (content) return ctx.render(content)
+    else return ctx
+  }
+})
+
+export default Rainbow as unknown as RainbowConstructed

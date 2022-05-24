@@ -19,7 +19,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node build.js",
     "test": "ava",
     "coverage": "c8 ava"
   },
