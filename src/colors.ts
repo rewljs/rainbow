@@ -19,7 +19,7 @@ const presetColors = [
   'pink',
 ] as const
 
-type PresetColors = (typeof presetColors)[number]
+type PresetColors = typeof presetColors[number]
 
 const Colors: Record<string, string> = {}
 

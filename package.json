@@ -20,7 +20,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "test": "c8 ava"
+    "test": "ava",
+    "coverage": "c8 ava"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.25.0",

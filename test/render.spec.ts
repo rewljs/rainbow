@@ -1,15 +1,6 @@
 import test from 'ava'
 import render from '../src/render'
 
-test('Provide escape sequence directly', t => {
-  const rendered = render({
-    content: 'text',
-    escape: '\x1b[38;2;255;130;30m',
-  })
-  t.is(rendered, '\x1b[38;2;255;130;30mtext\x1b[0m')
-  t.log(rendered)
-})
-
 test('Render orange text', t => {
   const rendered = render({
     content: 'text',
