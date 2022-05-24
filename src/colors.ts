@@ -46,3 +46,5 @@ createColor('violet', 285)
 createColor('pink', 312)
 
 export default Colors as Record<PresetColors, string>
+export { presetColors }
+export type { PresetColors }

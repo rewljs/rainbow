@@ -1,30 +1,29 @@
 import type { ColorTuple } from './types'
 
-interface SegmentWithCustomEscape {
-  content: string
+interface CustomEscape {
   escape: string
 }
 
-interface SegmentWithOptions {
-  content: string
+interface Options {
   bold?: boolean
+  dim?: boolean
   italic?: boolean
   underline?: boolean
-  invert?: boolean
+  blink?: boolean
+  inverse?: boolean
+  hidden?: boolean
+  strikethrough?: boolean
   color?: ColorTuple
   background?: ColorTuple
 }
 
-interface Segment {
+interface Content {
   content: string
-  escape?: string
-  bold?: boolean
-  italic?: boolean
-  underline?: boolean
-  invert?: boolean
-  color?: ColorTuple
-  background?: ColorTuple
 }
+
+type SegmentWithCustomEscape = CustomEscape & Content
+type SegmentWithOptions = Options & Content
+type Segment = Content & Partial<CustomEscape> & Options
 
 type IRender = {
   (s: SegmentWithCustomEscape): string
@@ -38,9 +37,13 @@ const render: IRender = (s: Segment): string => {
   else {
     ctrl = '\x1b['
     if (s.bold) ctrl += '1;'
+    if (s.dim) ctrl += '2;'
     if (s.italic) ctrl += '3;'
     if (s.underline) ctrl += '4;'
-    if (s.invert) ctrl += '7;'
+    if (s.blink) ctrl += '5;'
+    if (s.inverse) ctrl += '7;'
+    if (s.hidden) ctrl += '8;'
+    if (s.strikethrough) ctrl += '9;'
     if (s.color) ctrl += `38;2;${s.color.join(';')};`
     if (s.background) ctrl += `48;2;${s.background.join(';')};`
     ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'

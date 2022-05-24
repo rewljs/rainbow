@@ -111,7 +111,16 @@ test('Render bold text', t => {
     bold: true,
   })
   t.is(rendered, '\x1b[1mtext\x1b[0m')
-  t.log(rendered)
+  t.log('\x1b[0m' + rendered)
+})
+
+test('Render dim text', t => {
+  const rendered = render({
+    content: 'text',
+    dim: true,
+  })
+  t.is(rendered, '\x1b[2mtext\x1b[0m')
+  t.log('\x1b[0m' + rendered)
 })
 
 test('Render italic text', t => {
@@ -120,7 +129,7 @@ test('Render italic text', t => {
     italic: true,
   })
   t.is(rendered, '\x1b[3mtext\x1b[0m')
-  t.log(rendered)
+  t.log('\x1b[0m' + rendered)
 })
 
 test('Render underline text', t => {
@@ -129,7 +138,43 @@ test('Render underline text', t => {
     underline: true,
   })
   t.is(rendered, '\x1b[4mtext\x1b[0m')
-  t.log(rendered)
+  t.log('\x1b[0m' + rendered)
+})
+
+test('Render blink text', t => {
+  const rendered = render({
+    content: 'text',
+    blink: true,
+  })
+  t.is(rendered, '\x1b[5mtext\x1b[0m')
+  t.log('\x1b[0m' + rendered)
+})
+
+test('Render inverted text', t => {
+  const rendered = render({
+    content: 'text',
+    inverse: true,
+  })
+  t.is(rendered, '\x1b[7mtext\x1b[0m')
+  t.log('\x1b[0m' + rendered)
+})
+
+test('Render hidden text', t => {
+  const rendered = render({
+    content: 'text',
+    hidden: true,
+  })
+  t.is(rendered, '\x1b[8mtext\x1b[0m')
+  t.log('\x1b[0m' + rendered)
+})
+
+test('Render strikethrough text', t => {
+  const rendered = render({
+    content: 'text',
+    strikethrough: true,
+  })
+  t.is(rendered, '\x1b[9mtext\x1b[0m')
+  t.log('\x1b[0m' + rendered)
 })
 
 test('Render pink bold italic underline text with dark purple background', t => {
@@ -148,7 +193,7 @@ test('Render pink bold italic underline text with dark purple background', t => 
 test('Invert text color and background color in the middle', t => {
   const inside = render({
     content: 'inside',
-    invert: true,
+    inverse: true,
   })
   const outside = render({
     content: `outside ${inside} outside`,
