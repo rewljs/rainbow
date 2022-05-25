@@ -20,10 +20,12 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && node build.js",
+    "show": "node build.js && node show-colors.js",
     "test": "ava",
-    "coverage": "c8 ava"
+    "coverage": "c8 --reporter=html --reporter=text ava"
   },
   "devDependencies": {
+    "@types/node": "^17.0.35",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
     "ava": "^4.2.0",

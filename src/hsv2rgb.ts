@@ -2,6 +2,7 @@ import type { ColorTuple } from './types'
 
 /**
  * Convert HSL color to RGB color.
+ *
  * @param h Hue (0 - 360)
  * @param s Saturation (0 - 100)
  * @param v Value (or Brightness) (0 - 100)
