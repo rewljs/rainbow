@@ -2,6 +2,13 @@ import test from 'ava'
 import render, { expandStyle } from '../src/render'
 import type { SegmentStyles, SegmentStylesDeduped } from '../src/render'
 
+test('Render pure text', t => {
+  const rendered = render({
+    content: 'text',
+  })
+  t.is(rendered, 'text')
+})
+
 test('Render orange text', t => {
   const rendered = render({
     content: 'text',

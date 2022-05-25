@@ -64,8 +64,12 @@ const render = (s: Segment): string => {
   if (typeof s.background === 'string') ctrl += `48;${s.background};`
   else if (s.background) ctrl += `48;2;${s.background.join(';')};`
 
+  // Return unaltered string if no style is passed.
+  if (ctrl === '\x1b[') return s.content
+
   ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'
 
+  // Append the parsed escape sequence to the end of existing reset sequence.
   // eslint-disable-next-line no-control-regex
   const content = s.content.replace(/\x1b\[0m(?!\x1b|$)/g, `\x1b[0m${ctrl}`)
 

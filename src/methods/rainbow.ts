@@ -42,7 +42,7 @@ interface RainbowOptions {
    *
    * @default {}
    */
-  styles?: SegmentOptions
+  renderOptions?: SegmentOptions
 }
 
 /**
@@ -59,7 +59,7 @@ const rainbow = (content: string, options?: Partial<RainbowOptions>): string => 
     span: 360,
     s: 80,
     v: 95,
-    styles: {},
+    renderOptions: {},
     ...options,
   }
   if (val.offset === 'random') val.offset = Math.random() * 360
@@ -71,7 +71,7 @@ const rainbow = (content: string, options?: Partial<RainbowOptions>): string => 
   for (let c = 0; c < length; c++) {
     const h = (Math.floor(i * c) + val.offset) % 360
     rendered += render({
-      ...val.styles,
+      ...val.renderOptions,
       content: content[c],
       color: hsv2rgb(h, val.s, val.v),
     })

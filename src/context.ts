@@ -3,21 +3,22 @@ import type { SegmentOptions, SegmentStyles } from './render'
 import Colors, { presetColors } from './colors'
 import type { PresetColors } from './colors'
 
+import hsv2rgb from './hsv2rgb'
 import rainbow from './methods/rainbow'
 import type { RainbowOptions } from './methods/rainbow'
 
 interface ContextChain {
   /**
-   * Construct style chain.
+   * Construct options chain.
    *
-   * @param content Content to be styled
-   * @returns Styled content
+   * @param content Content to be rendered
+   * @returns rendered content
    */
   (content: string): string
   /**
-   * Construct style chain.
+   * Construct options chain.
    *
-   * @returns Styled chain
+   * @returns Options chain
    */
   (): Context
 }
@@ -25,11 +26,23 @@ interface ContextChain {
 type CreatedMethods = Record<SegmentStyles, ContextChain> & Record<PresetColors, ContextChain>
 
 interface Context extends CreatedMethods {
+  /**
+   * Rendering options, including styles and colors.
+   */
   options: SegmentOptions
+  /**
+   * Render text using current options chain.
+   *
+   * @param content Content to be rendered
+   * @returns rendered content
+   */
+  (content: string): string
 }
 
-class Context {
+class Context extends Function {
   constructor(options?: SegmentOptions) {
+    super()
+
     this.options = options || {}
 
     segmentStyles.forEach(style => {
@@ -39,29 +52,10 @@ class Context {
     presetColors.forEach(color => {
       this.createColorMethod(color)
     })
-  }
 
-  private createStyleMethod(style: SegmentStyles): void {
-    const styleMethod = (content?: string) => {
-      const expanded = expandStyle(style)
-      this.options[expanded] = true
-
-      if (content) return this.render(content)
-      return this
-    }
-
-    this[style] = styleMethod as ContextChain
-  }
-
-  private createColorMethod(color: PresetColors): void {
-    const colorMethod = (content?: string) => {
-      this.options.color = Colors[color]
-
-      if (content) return this.render(content)
-      return this
-    }
-
-    this[color] = colorMethod as ContextChain
+    return new Proxy(this, {
+      apply: (target, _, args: [string]) => target.render(...args),
+    })
   }
 
   /**
@@ -72,6 +66,57 @@ class Context {
    */
   render(content: string): string {
     return render({ ...this.options, content })
+  }
+
+  private createStyleMethod(style: SegmentStyles): void {
+    const method = (content?: string) => {
+      const expanded = expandStyle(style)
+      this.options[expanded] = true
+
+      if (content) return this.render(content)
+      return this
+    }
+
+    this[style] = method as ContextChain
+  }
+
+  private createColorMethod(color: PresetColors): void {
+    const method = (content?: string) => {
+      this.options.color = Colors[color]
+
+      if (content) return this.render(content)
+      return this
+    }
+
+    this[color] = method as ContextChain
+  }
+
+  /**
+   * Define custom color using RGB values.
+   *
+   * @param r Red (0 - 255)
+   * @param g Green (0 - 255)
+   * @param b Blue (0 - 255)
+   * @returns Options chain
+   */
+  rgb(r: number, g: number, b: number) {
+    this.options.color = [r, g, b]
+
+    return this
+  }
+
+  /**
+   * Define custom color using HSV (or HSB) values.
+   *
+   * @param h Hue (0 - 360)
+   * @param s Saturation (0 - 100)
+   * @param v Value (or Brightness) (0 - 100)
+   * @returns
+   */
+  hsv(h: number, s: number, v: number) {
+    this.options.color = hsv2rgb(h, s, v)
+
+    return this
   }
 
   /**
@@ -87,7 +132,7 @@ class Context {
   rainbow(content: string, options?: Partial<RainbowOptions>): string {
     return rainbow(content, {
       ...options,
-      styles: this.options,
+      renderOptions: this.options,
     })
   }
 }
