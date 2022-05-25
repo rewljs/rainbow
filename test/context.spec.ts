@@ -12,24 +12,29 @@ test('Render styled text', t => {
   t.is(ctx.b('text'), '\x1b[1mtext\x1b[0m')
 })
 
+test('Start chaining from style', t => {
+  const ctx = new Context()
+  t.is(ctx.b().white('text'), '\x1b[1;38;2;255;255;255mtext\x1b[0m')
+})
+
 test('Render colored text', t => {
   const ctx = new Context()
   t.is(ctx.white('text'), '\x1b[38;2;255;255;255mtext\x1b[0m')
 })
 
-test('Render style -> color chain', t => {
-  const ctx = new Context()
-  t.is(ctx.b().white('text'), '\x1b[1;38;2;255;255;255mtext\x1b[0m')
-})
-
-test('Render color -> style chain', t => {
+test('Start chaining from color', t => {
   const ctx = new Context()
   t.is(ctx.white().b('text'), '\x1b[1;38;2;255;255;255mtext\x1b[0m')
 })
 
-test('Render rainbow color text', t => {
+test('Render text with background color', t => {
   const ctx = new Context()
-  t.regex(ctx.rainbow('text'), TestRegExp)
+  t.is(ctx.bgWhite('text'), '\x1b[48;2;255;255;255mtext\x1b[0m')
+})
+
+test('Start chaining from background color', t => {
+  const ctx = new Context()
+  t.is(ctx.bgWhite().black('text'), '\x1b[38;2;0;0;0;48;2;255;255;255mtext\x1b[0m')
 })
 
 test('Set color using RGB', t => {
@@ -40,4 +45,9 @@ test('Set color using RGB', t => {
 test('Set color using HSV', t => {
   const ctx = new Context()
   t.is(ctx.hsv(0, 100, 100)('text'), '\x1b[38;2;255;0;0mtext\x1b[0m')
+})
+
+test('Render rainbow color text', t => {
+  const ctx = new Context()
+  t.regex(ctx.rainbow('text'), TestRegExp)
 })

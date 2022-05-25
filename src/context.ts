@@ -1,11 +1,15 @@
 import render, { segmentStyles, expandStyle } from './render'
 import type { SegmentOptions, SegmentStyles } from './render'
 import Colors, { presetColors } from './colors'
-import type { PresetColors } from './colors'
+import type { PresetColors, PresetBackgrounds } from './colors'
 
 import hsv2rgb from './hsv2rgb'
 import rainbow from './methods/rainbow'
 import type { RainbowOptions } from './methods/rainbow'
+
+const cap = <T extends string>(str: T): Capitalize<T> => {
+  return str.charAt(0).toUpperCase() + str.slice(1) as Capitalize<T>
+}
 
 interface ContextChain {
   /**
@@ -23,7 +27,10 @@ interface ContextChain {
   (): Context
 }
 
-type CreatedMethods = Record<SegmentStyles, ContextChain> & Record<PresetColors, ContextChain>
+type CreatedMethods =
+  Record<SegmentStyles, ContextChain> &
+  Record<PresetColors, ContextChain> &
+  Record<PresetBackgrounds, ContextChain>
 
 interface Context extends CreatedMethods {
   /**
@@ -51,6 +58,7 @@ class Context extends Function {
 
     presetColors.forEach(color => {
       this.createColorMethod(color)
+      this.createBackgroundMethod(color)
     })
 
     return new Proxy(this, {
@@ -89,6 +97,17 @@ class Context extends Function {
     }
 
     this[color] = method as ContextChain
+  }
+
+  private createBackgroundMethod(color: PresetColors): void {
+    const method = (content?: string) => {
+      this.options.background = Colors[color]
+
+      if (content) return this.render(content)
+      return this
+    }
+
+    this[`bg${cap(color)}`] = method as ContextChain
   }
 
   /**

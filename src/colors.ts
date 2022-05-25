@@ -24,6 +24,8 @@ const presetColors = [
 
 type PresetColors = typeof presetColors[number]
 
+type PresetBackgrounds = `bg${Capitalize<PresetColors>}`
+
 const Colors: Record<string, string> = {}
 
 const createColor = (name: PresetColors, h: number, s: number, v: number) => {
@@ -53,4 +55,4 @@ createColor('pink', 315, 45, 95)
 
 export default Colors as Record<PresetColors, string>
 export { presetColors }
-export type { PresetColors }
+export type { PresetColors, PresetBackgrounds }
