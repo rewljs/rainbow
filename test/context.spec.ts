@@ -41,3 +41,8 @@ test('Render rainbow color text', t => {
   const ctx = new Context()
   t.regex(ctx.rainbow('text'), TestRegExp)
 })
+
+test.only('test', t => {
+  t.log(new Context().dark.brown('text'))
+  t.pass()
+})

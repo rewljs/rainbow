@@ -1,4 +1,4 @@
 const Rainbow = require('./lib').default
-const presetColors = require('./lib').presetColors
+const ColorList = require('./lib').ColorList
 module.exports = Rainbow
-module.exports.presetColors = presetColors
+module.exports.ColorList = ColorList

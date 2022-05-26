@@ -1,5 +1,5 @@
 const r = require('./index')
-const { presetColors } = require('./index')
+const { ColorList } = require('./index')
 
 const width = 80
 const space = 10
@@ -36,5 +36,4 @@ const showColors = colors => {
   console.log(line)
 }
 
-showColors(presetColors.slice(0, 4))
-showColors(presetColors.slice(4))
+showColors(ColorList.default)

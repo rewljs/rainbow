@@ -1,6 +1,6 @@
 import render, { segmentStyles, expandStyle } from './impl/render'
 import type { SegmentOptions, SegmentStyles } from './impl/render'
-import Colors from './colors'
+import Colors, { ColorList } from './colors'
 import type { ColorMethods, ColorNames } from './colors'
 
 import hsv2rgb from './impl/hsv2rgb'
@@ -32,10 +32,6 @@ interface GeneratedMethods extends StyleMethods, ColorMethods {
 
 interface Context extends GeneratedMethods {
   /**
-   * Rendering options, including styles and colors.
-   */
-  options: SegmentOptions
-  /**
    * Render text using current options chain.
    *
    * @param content Content to be rendered
@@ -44,7 +40,28 @@ interface Context extends GeneratedMethods {
   (content: string): string
 }
 
+enum PaletteSet {
+  default,
+  light,
+  dark,
+}
+
+interface ContextModifier {
+  background: boolean
+  palette: PaletteSet
+}
+
 class Context extends Function {
+  /**
+   * Rendering options, including styles and colors.
+   */
+  options: SegmentOptions
+
+  private mod: ContextModifier = {
+    background: false,
+    palette: PaletteSet.default,
+  }
+
   constructor() {
     super()
 
@@ -54,7 +71,7 @@ class Context extends Function {
       this.createStyleMethod(style)
     })
 
-    Object.keys(Colors).forEach(color => {
+    ColorList.default.forEach(color => {
       this.createColorMethod(color as ColorNames.Default)
     })
 
@@ -87,7 +104,15 @@ class Context extends Function {
 
   private createColorMethod(color: ColorNames.Default): void {
     const method = (content?: string) => {
-      this.options.color = Colors.default[color]
+      switch (this.mod.palette) {
+        case PaletteSet.default:
+          this.options.color = Colors.default[color]
+          break
+        case PaletteSet.dark:
+          this.options.color = Colors.dark[color]
+          this.mod.palette = PaletteSet.default
+          break
+      }
 
       if (content) return this.render(content)
       return this
@@ -134,11 +159,20 @@ class Context extends Function {
    * @param options Options for the rainbow color
    * @returns Styled content
    */
-  rainbow(content: string, options?: Partial<RainbowOptions>): string {
+  rainbow(content: string, options?: Partial<RainbowOptions>) {
     return rainbow(content, {
       ...options,
       renderOptions: this.options,
     })
+  }
+
+  /**
+   * Set next color call to apply dark color.
+   */
+  get dark() {
+    this.mod.palette = PaletteSet.dark
+
+    return this
   }
 }
 

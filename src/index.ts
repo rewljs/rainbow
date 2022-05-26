@@ -21,7 +21,7 @@ segmentStyles.forEach(style => {
 ColorList.default.forEach(color => {
   Rainbow[color] = (content?: string) => {
     if (content) return render({ content, color: Colors.default[color] })
-    return new Context()
+    return new Context()[color]()
   }
 })
 
