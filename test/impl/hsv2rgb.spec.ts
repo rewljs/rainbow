@@ -1,6 +1,6 @@
 import test from 'ava'
-import hsv2rgb from '../src/hsv2rgb'
-import type { ColorTuple } from '../src/types'
+import hsv2rgb from '../../src/impl/hsv2rgb'
+import type { ColorTuple } from '../../src/impl/types'
 
 const transform = test.macro({
   exec(t, input: ColorTuple, expected: ColorTuple) {

@@ -1,6 +1,6 @@
-import hsv2rgb from '../hsv2rgb'
-import render from '../render'
-import type { SegmentOptions } from '../render'
+import hsv2rgb from '../impl/hsv2rgb'
+import render from '../impl/render'
+import type { SegmentOptions } from '../impl/render'
 
 interface RainbowOptions {
   /**

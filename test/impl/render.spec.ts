@@ -1,6 +1,6 @@
 import test from 'ava'
-import render, { expandStyle } from '../src/render'
-import type { SegmentStyles, SegmentStylesDeduped } from '../src/render'
+import render, { expandStyle } from '../../src/impl/render'
+import type { SegmentStyles, SegmentStylesDeduped } from '../../src/impl/render'
 
 test('Render pure text', t => {
   const rendered = render({

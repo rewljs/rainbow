@@ -1,4 +1,4 @@
-import hsv2rgb from './hsv2rgb'
+import hsv2rgb from './impl/hsv2rgb'
 
 const presetColors = [
   'black',
@@ -23,8 +23,6 @@ const presetColors = [
 ] as const
 
 type PresetColors = typeof presetColors[number]
-
-type PresetBackgrounds = `bg${Capitalize<PresetColors>}`
 
 const Colors: Record<string, string> = {}
 
@@ -55,4 +53,4 @@ createColor('pink', 315, 45, 95)
 
 export default Colors as Record<PresetColors, string>
 export { presetColors }
-export type { PresetColors, PresetBackgrounds }
+export type { PresetColors }

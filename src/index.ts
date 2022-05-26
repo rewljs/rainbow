@@ -1,6 +1,6 @@
 import Context from './context'
 import type { CreatedMethods } from './context'
-import render, { segmentStyles, expandStyle } from './render'
+import render, { segmentStyles, expandStyle } from './impl/render'
 import Colors, { presetColors } from './colors'
 
 import rainbow from './methods/rainbow'
