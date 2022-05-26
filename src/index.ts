@@ -7,6 +7,12 @@ import rainbow from './methods/rainbow'
 
 const Rainbow: Record<string, unknown> = {
   rainbow: rainbow,
+  get dark() {
+    return new Context().dark
+  },
+  get light() {
+    return new Context().light
+  },
 }
 
 segmentStyles.forEach(style => {

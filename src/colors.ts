@@ -23,23 +23,23 @@ const Colors = {
   light: lightColors.colors,
 }
 
-type ColorsType = typeof Colors
+type TColor = typeof Colors
 
-type ColorSet = keyof typeof Colors
+type U2I<U> = (U extends unknown ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never
 
-type U2I<U> = (U extends U ? (arg: U) => void : never) extends (arg: infer T) => void ? T : never
+type ColorSet = keyof TColor
 
-type AllColorNames = keyof U2I<ColorsType[keyof ColorsType]>
+type AllColorNames = keyof U2I<TColor[keyof TColor]>
 
-type AllColors = Record<AllColorNames, string>
-
-const ColorList = [
+const ColorList = [...new Set<string>([
   ...defaultColors.names,
   ...bwColors.names,
   ...grayColors.names,
   ...darkColors.names,
   ...lightColors.names,
-]
+])] as AllColorNames[]
+
+type AllColors = Record<AllColorNames, string>
 
 export default Colors
 export { ColorList }

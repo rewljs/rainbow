@@ -45,6 +45,11 @@ interface ContextModifier {
   colorSet: ColorSet
 }
 
+const defaultContextModifier: ContextModifier = {
+  background: false,
+  colorSet: 'default',
+}
+
 class Context extends Function {
   /**
    * Rendering options, including styles and colors.
@@ -56,10 +61,14 @@ class Context extends Function {
     colorSet: 'default',
   }
 
-  constructor() {
+  constructor(options: SegmentOptions = {}, mods: Partial<ContextModifier> = {}) {
     super()
 
-    this.options = {}
+    this.options = options
+    this.mods = {
+      ...defaultContextModifier,
+      ...mods,
+    }
 
     segmentStyles.forEach(style => {
       this.createStyleMethod(style)
@@ -104,8 +113,7 @@ class Context extends Function {
       if (this.mods.background) this.options.background = set[color]
       else this.options.color = set[color]
 
-      this.mods.background = false
-      this.mods.colorSet = 'default'
+      this.mods = defaultContextModifier
 
       if (content) return this.render(content)
       return this
