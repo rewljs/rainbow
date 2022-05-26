@@ -20,7 +20,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && node build.js",
-    "show": "node build.js && node show-colors.js",
+    "show": "node build.js && node -r esbuild-register show-colors.ts ",
     "test": "ava",
     "coverage": "c8 --reporter=html --reporter=text ava"
   },
@@ -35,8 +35,5 @@
     "eslint": "^8.16.0",
     "eslint-plugin-ava": "^13.2.0",
     "typescript": "^4.6.4"
-  },
-  "dependencies": {
-    "kleur": "^4.1.4"
   }
 }

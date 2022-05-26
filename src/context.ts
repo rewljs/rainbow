@@ -54,21 +54,14 @@ class Context extends Function {
   /**
    * Rendering options, including styles and colors.
    */
-  options: SegmentOptions
+  options: SegmentOptions = {}
 
-  private mods: ContextModifier = {
-    background: false,
-    colorSet: 'default',
-  }
+  private mods: ContextModifier = defaultContextModifier
 
-  constructor(options: SegmentOptions = {}, mods: Partial<ContextModifier> = {}) {
+  constructor(options: SegmentOptions = {}) {
     super()
 
     this.options = options
-    this.mods = {
-      ...defaultContextModifier,
-      ...mods,
-    }
 
     segmentStyles.forEach(style => {
       this.createStyleMethod(style)
@@ -123,6 +116,15 @@ class Context extends Function {
   }
 
   /**
+   * Set next color to be applied on background.
+   */
+  get bg() {
+    this.mods.background = true
+
+    return this
+  }
+
+  /**
    * Set next color to be dark colors.
    */
   get dark() {
@@ -136,15 +138,6 @@ class Context extends Function {
    */
   get light() {
     this.mods.colorSet = 'light'
-
-    return this
-  }
-
-  /**
-   * Set next color to be applied on background.
-   */
-  get bg() {
-    this.mods.background = true
 
     return this
   }
