@@ -1,7 +1,7 @@
 import render, { segmentStyles, expandStyle } from './impl/render'
 import type { SegmentOptions, SegmentStyles } from './impl/render'
-import Colors, { presetColors } from './colors'
-import type { PresetColors } from './colors'
+import Colors from './colors'
+import type { ColorMethods, ColorNames } from './colors'
 
 import hsv2rgb from './impl/hsv2rgb'
 import rainbow from './methods/rainbow'
@@ -23,11 +23,14 @@ interface ContextChain {
   (): Context
 }
 
-interface CreatedMethods extends
-  Record<SegmentStyles, ContextChain>,
-  Record<PresetColors, ContextChain> { }
+interface StyleMethods extends
+  Record<SegmentStyles, ContextChain> {
+}
 
-interface Context extends CreatedMethods {
+interface GeneratedMethods extends StyleMethods, ColorMethods {
+}
+
+interface Context extends GeneratedMethods {
   /**
    * Rendering options, including styles and colors.
    */
@@ -42,17 +45,17 @@ interface Context extends CreatedMethods {
 }
 
 class Context extends Function {
-  constructor(options?: SegmentOptions) {
+  constructor() {
     super()
 
-    this.options = options || {}
+    this.options = {}
 
     segmentStyles.forEach(style => {
       this.createStyleMethod(style)
     })
 
-    presetColors.forEach(color => {
-      this.createColorMethod(color)
+    Object.keys(Colors).forEach(color => {
+      this.createColorMethod(color as ColorNames.Default)
     })
 
     return new Proxy(this, {
@@ -82,9 +85,9 @@ class Context extends Function {
     this[style] = method as ContextChain
   }
 
-  private createColorMethod(color: PresetColors): void {
+  private createColorMethod(color: ColorNames.Default): void {
     const method = (content?: string) => {
-      this.options.color = Colors[color]
+      this.options.color = Colors.default[color]
 
       if (content) return this.render(content)
       return this
@@ -140,4 +143,4 @@ class Context extends Function {
 }
 
 export default Context
-export type { ContextChain, CreatedMethods }
+export type { ContextChain, GeneratedMethods }

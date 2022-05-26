@@ -69,7 +69,7 @@ const render = (s: Segment): string => {
 
   ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'
 
-  // Append the parsed escape sequence to the end of existing reset sequence.
+  // Append the parsed escape sequence to the end of existing reset sequences.
   // eslint-disable-next-line no-control-regex
   const content = s.content.replace(/\x1b\[0m(?!\x1b|$)/g, `\x1b[0m${ctrl}`)
 

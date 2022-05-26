@@ -1,56 +1,24 @@
-import hsv2rgb from './impl/hsv2rgb'
+import type { ColorMethod } from './impl/palette'
+import type { ContextChain } from './context'
 
-const presetColors = [
-  'black',
-  'gray',
-  'grey',
-  'white',
-  'red',
-  'orange',
-  'honey',
-  'yellow',
-  'lemon',
-  'olive',
-  'green',
-  'mint',
-  'cyan',
-  'sky',
-  'blue',
-  'purple',
-  'violet',
-  'magenta',
-  'pink',
-] as const
+import defaultColors from './colors/default'
 
-type PresetColors = typeof presetColors[number]
-
-const Colors: Record<string, string> = {}
-
-const createColor = (name: PresetColors, h: number, s: number, v: number) => {
-  const rgb = hsv2rgb(h, s, v)
-  Colors[name] = `2;${rgb.join(';')}`
+interface ColorMethods extends
+  Record<ColorMethod<typeof defaultColors.names>, ContextChain> {
 }
 
-createColor('black', 0, 0, 0)
-createColor('gray', 0, 0, 50)
-createColor('grey', 0, 0, 50)
-createColor('white', 0, 0, 100)
-createColor('red', 8, 70, 95)
-createColor('orange', 25, 80, 95)
-createColor('honey', 36, 80, 95)
-createColor('yellow', 48, 80, 95)
-createColor('lemon', 60, 80, 90)
-createColor('olive', 78, 70, 95)
-createColor('green', 115, 70, 90)
-createColor('mint', 156, 75, 95)
-createColor('cyan', 185, 80, 95)
-createColor('sky', 202, 90, 95)
-createColor('blue', 230, 70, 100)
-createColor('purple', 265, 60, 100)
-createColor('violet', 280, 60, 95)
-createColor('magenta', 300, 50, 95)
-createColor('pink', 315, 45, 95)
+const Colors = {
+  default: defaultColors.export(),
+}
 
-export default Colors as Record<PresetColors, string>
-export { presetColors }
-export type { PresetColors }
+namespace ColorNames {
+  export type Default = keyof typeof Colors.default
+}
+
+const ColorList = {
+  default: Object.keys(Colors) as ColorNames.Default[],
+}
+
+export default Colors
+export { ColorList }
+export type { ColorMethods, ColorNames }

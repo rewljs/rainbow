@@ -1,7 +1,7 @@
 import Context from './context'
-import type { CreatedMethods } from './context'
+import type { GeneratedMethods } from './context'
 import render, { segmentStyles, expandStyle } from './impl/render'
-import Colors, { presetColors } from './colors'
+import Colors, { ColorList } from './colors'
 
 import rainbow from './methods/rainbow'
 
@@ -14,20 +14,20 @@ segmentStyles.forEach(style => {
     const expanded = expandStyle(style)
 
     if (content) return render({ content, [expanded]: true })
-    return new Context({ [expanded]: true })
+    return new Context()[expanded]()
   }
 })
 
-presetColors.forEach(color => {
+ColorList.default.forEach(color => {
   Rainbow[color] = (content?: string) => {
-    if (content) return render({ content, color: Colors[color] })
-    return new Context({ color: Colors[color] })
+    if (content) return render({ content, color: Colors.default[color] })
+    return new Context()
   }
 })
 
-interface Rainbow extends CreatedMethods {
+interface Rainbow extends GeneratedMethods {
   rainbow: typeof rainbow
 }
 
 export default Rainbow as unknown as Rainbow
-export { presetColors }
+export { ColorList }
