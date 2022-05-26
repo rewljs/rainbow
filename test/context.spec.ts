@@ -43,6 +43,6 @@ test('Render rainbow color text', t => {
 })
 
 test.only('test', t => {
-  t.log(new Context().dark.brown('text'))
+  t.log(new Context().yellow('text'))
   t.pass()
 })

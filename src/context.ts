@@ -1,7 +1,7 @@
 import render, { segmentStyles, expandStyle } from './impl/render'
 import type { SegmentOptions, SegmentStyles } from './impl/render'
 import Colors, { ColorList } from './colors'
-import type { ColorMethods, ColorNames } from './colors'
+import type { ColorMethods, ColorNames, ColorSet } from './colors'
 
 import hsv2rgb from './impl/hsv2rgb'
 import rainbow from './methods/rainbow'
@@ -40,15 +40,9 @@ interface Context extends GeneratedMethods {
   (content: string): string
 }
 
-enum PaletteSet {
-  default,
-  light,
-  dark,
-}
-
 interface ContextModifier {
   background: boolean
-  palette: PaletteSet
+  set: ColorSet
 }
 
 class Context extends Function {
@@ -59,7 +53,7 @@ class Context extends Function {
 
   private mod: ContextModifier = {
     background: false,
-    palette: PaletteSet.default,
+    set: 'default',
   }
 
   constructor() {
@@ -104,15 +98,12 @@ class Context extends Function {
 
   private createColorMethod(color: ColorNames.Default): void {
     const method = (content?: string) => {
-      switch (this.mod.palette) {
-        case PaletteSet.default:
-          this.options.color = Colors.default[color]
-          break
-        case PaletteSet.dark:
-          this.options.color = Colors.dark[color]
-          this.mod.palette = PaletteSet.default
-          break
-      }
+      const set = Colors[this.mod.set][color] ? Colors[this.mod.set] : Colors.default
+      if (this.mod.background) this.options.background = set[color]
+      else this.options.color = set[color]
+
+      this.mod.background = false
+      this.mod.set = 'default'
 
       if (content) return this.render(content)
       return this
@@ -167,10 +158,28 @@ class Context extends Function {
   }
 
   /**
-   * Set next color call to apply dark color.
+   * Set next color to be dark colors.
    */
   get dark() {
-    this.mod.palette = PaletteSet.dark
+    this.mod.set = 'dark'
+
+    return this
+  }
+
+  /**
+   * Set next color to be light colors.
+   */
+  get light() {
+    this.mod.set = 'light'
+
+    return this
+  }
+
+  /**
+   * Set next color to be applied on background.
+   */
+  get bg() {
+    this.mod.background = true
 
     return this
   }
