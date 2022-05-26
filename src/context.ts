@@ -1,7 +1,7 @@
 import render, { segmentStyles, expandStyle } from './impl/render'
 import type { SegmentOptions, SegmentStyles } from './impl/render'
 import Colors, { ColorList } from './colors'
-import type { ColorMethods, ColorNames, ColorSet } from './colors'
+import type { ColorMethods, ColorSet, AllColorNames, AllColors } from './colors'
 
 import hsv2rgb from './impl/hsv2rgb'
 import rainbow from './methods/rainbow'
@@ -42,7 +42,7 @@ interface Context extends GeneratedMethods {
 
 interface ContextModifier {
   background: boolean
-  set: ColorSet
+  colorSet: ColorSet
 }
 
 class Context extends Function {
@@ -51,9 +51,9 @@ class Context extends Function {
    */
   options: SegmentOptions
 
-  private mod: ContextModifier = {
+  private mods: ContextModifier = {
     background: false,
-    set: 'default',
+    colorSet: 'default',
   }
 
   constructor() {
@@ -65,8 +65,8 @@ class Context extends Function {
       this.createStyleMethod(style)
     })
 
-    ColorList.default.forEach(color => {
-      this.createColorMethod(color as ColorNames.Default)
+    ColorList.forEach(color => {
+      this.createColorMethod(color as AllColorNames)
     })
 
     return new Proxy(this, {
@@ -96,20 +96,49 @@ class Context extends Function {
     this[style] = method as ContextChain
   }
 
-  private createColorMethod(color: ColorNames.Default): void {
+  private createColorMethod(color: AllColorNames): void {
     const method = (content?: string) => {
-      const set = Colors[this.mod.set][color] ? Colors[this.mod.set] : Colors.default
-      if (this.mod.background) this.options.background = set[color]
+      let set = Colors[this.mods.colorSet] as AllColors
+      if (!set[color]) set = Colors.default
+
+      if (this.mods.background) this.options.background = set[color]
       else this.options.color = set[color]
 
-      this.mod.background = false
-      this.mod.set = 'default'
+      this.mods.background = false
+      this.mods.colorSet = 'default'
 
       if (content) return this.render(content)
       return this
     }
 
     this[color] = method as ContextChain
+  }
+
+  /**
+   * Set next color to be dark colors.
+   */
+  get dark() {
+    this.mods.colorSet = 'dark'
+
+    return this
+  }
+
+  /**
+   * Set next color to be light colors.
+   */
+  get light() {
+    this.mods.colorSet = 'light'
+
+    return this
+  }
+
+  /**
+   * Set next color to be applied on background.
+   */
+  get bg() {
+    this.mods.background = true
+
+    return this
   }
 
   /**
@@ -155,33 +184,6 @@ class Context extends Function {
       ...options,
       renderOptions: this.options,
     })
-  }
-
-  /**
-   * Set next color to be dark colors.
-   */
-  get dark() {
-    this.mod.set = 'dark'
-
-    return this
-  }
-
-  /**
-   * Set next color to be light colors.
-   */
-  get light() {
-    this.mod.set = 'light'
-
-    return this
-  }
-
-  /**
-   * Set next color to be applied on background.
-   */
-  get bg() {
-    this.mod.background = true
-
-    return this
   }
 }
 
