@@ -1,6 +1,6 @@
 import test from 'ava'
 import r from '../src/index'
-import { TestRegExp } from './utils'
+import { EachCharRegExp } from './utils'
 
 test('Render color directly', t => {
   t.is(r.white('text'), '\x1b[38;2;255;255;255mtext\x1b[0m')
@@ -19,5 +19,5 @@ test('Generate context from color invoke', t => {
 })
 
 test('Render rainbow color directly', t => {
-  t.regex(r.rainbow('text'), TestRegExp)
+  t.regex(r.rainbow('text'), EachCharRegExp)
 })

@@ -4,6 +4,7 @@ import render, { segmentStyles, expandStyle } from './impl/render'
 import Colors, { ColorList } from './colors'
 
 import rainbow from './methods/rainbow'
+import hash from './methods/hash'
 
 const Rainbow: Record<string, unknown> = {
   get bg() {
@@ -27,6 +28,8 @@ const Rainbow: Record<string, unknown> = {
   },
 
   rainbow: rainbow,
+
+  hash: hash,
 }
 
 segmentStyles.forEach(style => {
@@ -92,6 +95,20 @@ interface Rainbow extends OptionsMethods {
    * @returns Rendered content
    */
   rainbow: typeof rainbow
+
+  /**
+   * Render color according to the provided content.
+   *
+   * Color would be the same if the content is the same.
+   *
+   * Can only be the last method in the chain, and overrides the previous
+   * chained color. `bg` modifier can be chained before this method.
+   *
+   * @param content Content to be rendered
+   * @param options Options for the color method
+   * @returns Rendered content
+   */
+  hash: typeof hash
 }
 
 export default Rainbow as unknown as Rainbow

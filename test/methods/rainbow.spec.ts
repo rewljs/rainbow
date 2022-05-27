@@ -1,23 +1,23 @@
 import test from 'ava'
 import rainbow from '../../src/methods/rainbow'
-import { TestRegExp } from '../utils'
+import { EachCharRegExp } from '../utils'
 
 test('Render rainbow color', t => {
-  t.regex(rainbow('text'), TestRegExp)
+  t.regex(rainbow('text'), EachCharRegExp)
 })
 
 test('Render rainbow color with random hue offset', t => {
-  t.regex(rainbow('text', { offset: 'random' }), TestRegExp)
+  t.regex(rainbow('text', { offset: 'random' }), EachCharRegExp)
 })
 
 test('Render rainbow color with reversed spectrum', t => {
-  t.regex(rainbow('test', { reverse: true }), TestRegExp)
+  t.regex(rainbow('test', { reverse: true }), EachCharRegExp)
 })
 
 test('Render rainbow color with custom hue span', t => {
-  t.regex(rainbow('test', { span: 60 }), TestRegExp)
+  t.regex(rainbow('test', { span: 60 }), EachCharRegExp)
 })
 
 test('Render rainbow color to the background', t => {
-  t.regex(rainbow('text', { background: true }), /(\x1b\[[\d;]+m.*\x1b\[0m)+/)
+  t.regex(rainbow('text', { background: true }), EachCharRegExp)
 })

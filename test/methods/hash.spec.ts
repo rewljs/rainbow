@@ -1,10 +1,9 @@
 import test from 'ava'
 import hash from '../../src/methods/hash'
-
-const textRegExp = /\x1b\[38;2;\d{1,3};\d{1,3};\d{1,3}mtext\x1b\[0m/
+import { ColorRegExp, BgRegExp } from '../utils'
 
 test('Render color', t => {
-  t.regex(hash('text'), textRegExp)
+  t.regex(hash('text'), ColorRegExp)
 })
 
 test('Render the same color for the same string', t => {
@@ -19,13 +18,13 @@ test('Render color for extra long string', t => {
 })
 
 test('Render color using provided saturation', t => {
-  t.regex(hash('text', { s: 90 }), textRegExp)
+  t.regex(hash('text', { s: 90 }), ColorRegExp)
 })
 
 test('Render color using provided value', t => {
-  t.regex(hash('text', { v: 90 }), textRegExp)
+  t.regex(hash('text', { v: 90 }), ColorRegExp)
 })
 
 test('Render color to the background', t => {
-  t.regex(hash('text', { background: true }), /\x1b\[48;2;\d{1,3};\d{1,3};\d{1,3}mtext\x1b\[0m/)
+  t.regex(hash('text', { background: true }), BgRegExp)
 })
