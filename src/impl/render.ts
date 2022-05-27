@@ -80,11 +80,12 @@ const render = (s: Segment): string => {
     content = content.replace(/(?<!\x1b\[0m)\x1b\[0m(?!\x1b\[0)/g, `\x1b[0m${ctrl}`)
   }
 
-  const start = content.startsWith('\x1b[') ? '' : ctrl
-  let rendered = start + content + '\x1b[0m'
+  let rendered = ctrl + content + '\x1b[0m'
 
   // Delete escape sequence between two \x1b[0m.
-  rendered = rendered.replace(/\x1b\[0m(\x1b\[[0-9;]+m)+\x1b\[0m/g, '\x1b[0m')
+  rendered = rendered
+    .replace(/\x1b\[0m(\x1b\[[0-9;]+m)+\x1b\[0m/g, '\x1b[0m')
+    .replace(/^(\x1b\[[0-9;]+m)+\x1b\[0m\x1b\[0/g, '\x1b[0m\x1b[0')
 
   return rendered
 }

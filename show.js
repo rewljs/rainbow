@@ -2,30 +2,34 @@ const r = require('./index')
 const { ColorList } = require('./index')
 
 const width = 80
-const space = 10
-const column = Math.floor(width / space)
 
-const pad = str => ' '.repeat(space - str.length)
+const pad = (str, n = 10) => ' '.repeat(n - str.length)
 const cap = str => str[0].toUpperCase() + str.slice(1)
+const half = str => Math.floor((width - str.length) / 2)
+const enter = () => console.log('')
 
-const title = ' All Available Preset Colors '
+const showTitle = (title, offset = 0, span = 360) => {
+  console.log(
+    ' '.repeat(half(title) - 4),
+    r.gray('--- '),
+    r.black().u().rainbow(title, { offset, span }),
+    r.gray(' ---'),
+  )
+}
 
-console.log(
-  ' '.repeat(Math.floor((width - title.length) / 2) - 4),
-  r.gray('--- '),
-  r.black().u().bg.rainbow(title),
-  r.gray(' ---'),
-)
+const methodUsingWhiteBg = ['black', 'gray', ...ColorList.slice(20, 25)]
 
-const showColors = (colors, set) => {
+const showMethods = (names, nameWidth = 10, set) => {
+  const column = Math.floor(width / nameWidth)
   let line = ''
   let count = 0
 
-  for (let i = 0; i < colors.length; i++) {
-    const color = colors[i]
+  for (const name of names) {
     let ctx = r
     if (set) ctx = ctx[set]
-    line += ctx[color](cap(color)) + pad(color)
+    let word = ctx[name](cap(name)) + pad(name, nameWidth)
+    if (methodUsingWhiteBg.includes(name)) word = r.bg.v90(word)
+    line += word
     count++
 
     if (count >= column) {
@@ -38,15 +42,22 @@ const showColors = (colors, set) => {
   if (line) console.log(line)
 }
 
-console.log(r.v90('Grayscales:'))
-showColors(ColorList.slice(16, 20))
-showColors(ColorList.slice(20))
+showTitle(' All Available Preset Styles And Colors ')
+enter()
+showTitle(' Styles ', 120, 120)
 
-console.log(r.v90('Colors:'))
-showColors(ColorList.slice(0, 16))
+showMethods(['bold', 'italic', 'underline', 'strikethrough'], 20)
+showMethods(['dim', 'blink', 'inverse', 'hidden'], 20)
+enter()
 
-console.log(r.v90(`Colors ${r.v60('(dark)')}:`))
-showColors(ColorList.slice(0, 16), 'dark')
-
-console.log(r.v90(`Colors ${r.v60('(light)')}:`))
-showColors(ColorList.slice(0, 16), 'light')
+showTitle(' Colors ', 240, 120)
+console.log('Default:')
+showMethods(ColorList.slice(0, 16))
+console.log('Dark:')
+showMethods(ColorList.slice(0, 16), 10, 'dark')
+console.log('Light:')
+showMethods(ColorList.slice(0, 16), 10, 'light')
+console.log('Grayscales:')
+showMethods(ColorList.slice(16, 20))
+showMethods(ColorList.slice(20, 25))
+showMethods(ColorList.slice(25))
