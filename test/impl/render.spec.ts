@@ -2,14 +2,14 @@ import test from 'ava'
 import render, { expandStyle } from '../../src/impl/render'
 import type { SegmentStyles, SegmentStylesDeduped } from '../../src/impl/render'
 
-test('Render pure text', t => {
+test('Pure text', t => {
   const rendered = render({
     content: 'text',
   })
   t.is(rendered, 'text')
 })
 
-test('Render orange text', t => {
+test('Orange text', t => {
   const rendered = render({
     content: 'text',
     color: [255, 130, 30],
@@ -17,7 +17,7 @@ test('Render orange text', t => {
   t.is(rendered, '\x1b[38;2;255;130;30mtext\x1b[0m')
 })
 
-test('Render orange text with direct color code', t => {
+test('Orange text with direct color code', t => {
   const rendered = render({
     content: 'text',
     color: '2;255;130;30',
@@ -25,7 +25,7 @@ test('Render orange text with direct color code', t => {
   t.is(rendered, '\x1b[38;2;255;130;30mtext\x1b[0m')
 })
 
-test('Render orange text inside blue text', t => {
+test('Orange text inside blue text', t => {
   const inside = render({
     content: 'inside',
     color: [255, 130, 30],
@@ -37,7 +37,7 @@ test('Render orange text inside blue text', t => {
   t.is(outside, '\x1b[38;2;70;200;255moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m outside\x1b[0m')
 })
 
-test('Render two orange texts inside blue text', t => {
+test('Two orange texts inside blue text', t => {
   const inside = render({
     content: 'inside',
     color: [255, 130, 30],
@@ -49,7 +49,7 @@ test('Render two orange texts inside blue text', t => {
   t.is(outside, '\x1b[38;2;70;200;255moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m outside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m outside\x1b[0m')
 })
 
-test('Render orange text inside blue text inside pink text', t => {
+test('Orange text inside blue text inside pink text', t => {
   const inside = render({
     content: 'inside',
     color: [255, 130, 30],
@@ -65,7 +65,7 @@ test('Render orange text inside blue text inside pink text', t => {
   t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
-test('Render orange text left to blue text inside pink text', t => {
+test('Orange text left to blue text inside pink text', t => {
   const inside = render({
     content: 'inside',
     color: [255, 130, 30],
@@ -81,7 +81,7 @@ test('Render orange text left to blue text inside pink text', t => {
   t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m\x1b[38;2;70;200;255m\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
-test('Render orange text right to blue text inside pink text', t => {
+test('Orange text right to blue text inside pink text', t => {
   const inside = render({
     content: 'inside',
     color: [255, 130, 30],
@@ -97,7 +97,7 @@ test('Render orange text right to blue text inside pink text', t => {
   t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
-test('Render text with orange background', t => {
+test('Text with orange background', t => {
   const rendered = render({
     content: 'text',
     background: [255, 130, 30],
@@ -105,7 +105,7 @@ test('Render text with orange background', t => {
   t.is(rendered, '\x1b[48;2;255;130;30mtext\x1b[0m')
 })
 
-test('Render text with orange background with direct color code', t => {
+test('Text with orange background with direct color code', t => {
   const rendered = render({
     content: 'text',
     background: '2;255;130;30',
@@ -113,7 +113,7 @@ test('Render text with orange background with direct color code', t => {
   t.is(rendered, '\x1b[48;2;255;130;30mtext\x1b[0m')
 })
 
-test('Render text with style reset', t => {
+test('Text with style reset', t => {
   const inside = render({
     content: 'inside',
     reset: true,
@@ -125,7 +125,7 @@ test('Render text with style reset', t => {
   t.is(outside, '\x1b[38;2;255;130;30moutside \x1b[0m\x1b[0minside\x1b[0m\x1b[38;2;255;130;30m outside\x1b[0m')
 })
 
-test('Render bold text', t => {
+test('Bold text', t => {
   const rendered = render({
     content: 'text',
     bold: true,
@@ -133,7 +133,7 @@ test('Render bold text', t => {
   t.is(rendered, '\x1b[1mtext\x1b[0m')
 })
 
-test('Render dim text', t => {
+test('Dim text', t => {
   const rendered = render({
     content: 'text',
     dim: true,
@@ -141,7 +141,7 @@ test('Render dim text', t => {
   t.is(rendered, '\x1b[2mtext\x1b[0m')
 })
 
-test('Render italic text', t => {
+test('Italic text', t => {
   const rendered = render({
     content: 'text',
     italic: true,
@@ -149,7 +149,7 @@ test('Render italic text', t => {
   t.is(rendered, '\x1b[3mtext\x1b[0m')
 })
 
-test('Render underline text', t => {
+test('Underline text', t => {
   const rendered = render({
     content: 'text',
     underline: true,
@@ -157,7 +157,7 @@ test('Render underline text', t => {
   t.is(rendered, '\x1b[4mtext\x1b[0m')
 })
 
-test('Render blink text', t => {
+test('Blink text', t => {
   const rendered = render({
     content: 'text',
     blink: true,
@@ -165,7 +165,7 @@ test('Render blink text', t => {
   t.is(rendered, '\x1b[5mtext\x1b[0m')
 })
 
-test('Render inverted text', t => {
+test('Inverted text', t => {
   const rendered = render({
     content: 'text',
     inverse: true,
@@ -173,7 +173,7 @@ test('Render inverted text', t => {
   t.is(rendered, '\x1b[7mtext\x1b[0m')
 })
 
-test('Render hidden text', t => {
+test('Hidden text', t => {
   const rendered = render({
     content: 'text',
     hidden: true,
@@ -181,7 +181,7 @@ test('Render hidden text', t => {
   t.is(rendered, '\x1b[8mtext\x1b[0m')
 })
 
-test('Render strikethrough text', t => {
+test('Strikethrough text', t => {
   const rendered = render({
     content: 'text',
     strikethrough: true,
@@ -189,7 +189,7 @@ test('Render strikethrough text', t => {
   t.is(rendered, '\x1b[9mtext\x1b[0m')
 })
 
-test('Render pink bold italic underline text with dark purple background', t => {
+test('Pink bold italic underline text with dark purple background', t => {
   const rendered = render({
     content: 'text',
     bold: true,

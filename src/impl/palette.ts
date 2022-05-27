@@ -10,7 +10,7 @@ class Palette<T extends readonly string[] | []> {
     this.names = names as T
   }
 
-  define(name: string, h: number, s: number, v: number) {
+  define(name: T[number], h: number, s: number, v: number) {
     const rgb = hsv2rgb(h, s, v)
     this._colors[name] = `2;${rgb.join(';')}`
     return this
@@ -22,4 +22,4 @@ class Palette<T extends readonly string[] | []> {
 }
 
 export default Palette
-export { ColorMethod }
+export type { ColorMethod }
