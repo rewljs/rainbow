@@ -9,4 +9,6 @@ True Color display in console with no fallback.
 
 ## Showcase
 
-<img src='./docs/show.png' width=400>
+<div align='center'>
+  <img src='./docs/show.png' width=600>
+</div>
