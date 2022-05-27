@@ -125,7 +125,7 @@ test('Text with style reset', t => {
   t.is(outside, '\x1b[38;2;255;130;30moutside \x1b[0m\x1b[0minside\x1b[0m\x1b[38;2;255;130;30m outside\x1b[0m')
 })
 
-test('Text with style reset at the end', t => {
+test('Text with style reset (left edge)', t => {
   const inside = render({
     content: 'inside',
     reset: true,
@@ -137,7 +137,7 @@ test('Text with style reset at the end', t => {
   t.is(outside, '\x1b[38;2;255;130;30moutside \x1b[0m\x1b[0minside\x1b[0m')
 })
 
-test('Text with style reset at the beginning', t => {
+test('Text with style reset (right edge)', t => {
   const inside = render({
     content: 'inside',
     reset: true,

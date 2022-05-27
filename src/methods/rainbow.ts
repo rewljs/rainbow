@@ -4,6 +4,12 @@ import type { SegmentOptions } from '../impl/render'
 
 interface RainbowOptions {
   /**
+   * Whether the rainbow color should be applied to background.
+   *
+   * @default false
+   */
+  background: boolean
+  /**
    * Offset of the starting hue. Default to 0 (starts from red).
    *
    * Would be a random number if set to 'random'.
@@ -54,6 +60,7 @@ interface RainbowOptions {
  */
 const rainbow = (content: string, options?: Partial<RainbowOptions>): string => {
   const val: RainbowOptions = {
+    background: false,
     offset: 0,
     reverse: false,
     span: 360,
@@ -66,14 +73,16 @@ const rainbow = (content: string, options?: Partial<RainbowOptions>): string => 
 
   const length = content.length
   const i = val.span / length * (val.reverse ? -1 : 1)
+  const colorField = val.background ? 'background' : 'color'
   let rendered = ''
 
   for (let c = 0; c < length; c++) {
     const h = (Math.floor(i * c) + val.offset) % 360
+    const rgb = hsv2rgb(h, val.s, val.v)
     rendered += render({
       ...val.renderOptions,
       content: content[c],
-      color: hsv2rgb(h, val.s, val.v),
+      [colorField]: rgb,
     })
   }
 

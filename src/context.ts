@@ -173,7 +173,7 @@ class Context extends Function {
    * Render rainbow color to content using current style chaining.
    *
    * Can only be the last method in the chain, and overrides the previous
-   * chained color.
+   * chained color. `bg` modifier can be chained before this method.
    *
    * @param content Content to be rebdered
    * @param options Options for the rainbow color
@@ -182,6 +182,7 @@ class Context extends Function {
   rainbow(content: string, options?: Partial<RainbowOptions>) {
     return rainbow(content, {
       ...options,
+      background: this.mods.background,
       renderOptions: this.options,
     })
   }

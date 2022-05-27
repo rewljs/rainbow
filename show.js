@@ -8,12 +8,12 @@ const column = Math.floor(width / space)
 const pad = str => ' '.repeat(space - str.length)
 const cap = str => str[0].toUpperCase() + str.slice(1)
 
-const title = 'All Available Preset Colors'
+const title = ' All Available Preset Colors '
 
 console.log(
   ' '.repeat(Math.floor((width - title.length) / 2) - 4),
   r.gray('--- '),
-  r.u().rainbow(title),
+  r.black().u().bg.rainbow(title),
   r.gray(' ---'),
 )
 
