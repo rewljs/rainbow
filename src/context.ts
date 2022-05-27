@@ -6,6 +6,8 @@ import type { ColorMethods, ColorSet, AllColorNames, AllColors } from './colors'
 import hsv2rgb from './impl/hsv2rgb'
 import rainbow from './methods/rainbow'
 import type { RainbowOptions } from './methods/rainbow'
+import hash from './methods/hash'
+import type { HashOptions } from './methods/hash'
 
 interface ContextChain {
   /**
@@ -175,12 +177,32 @@ class Context extends Function {
    * Can only be the last method in the chain, and overrides the previous
    * chained color. `bg` modifier can be chained before this method.
    *
-   * @param content Content to be rebdered
-   * @param options Options for the rainbow color
+   * @param content Content to be rendered
+   * @param options Options for the color method
    * @returns Rendered content
    */
   rainbow(content: string, options?: Partial<RainbowOptions>) {
     return rainbow(content, {
+      ...options,
+      background: this.mods.background,
+      renderOptions: this.options,
+    })
+  }
+
+  /**
+   * Render color according to the provided content.
+   *
+   * Color would be the same if the content is the same.
+   *
+   * Can only be the last method in the chain, and overrides the previous
+   * chained color. `bg` modifier can be chained before this method.
+   *
+   * @param content Content to be rendered
+   * @param options Options for the color method
+   * @returns Rendered content
+   */
+  hash(content: string, options?: Partial<HashOptions>) {
+    return hash(content, {
       ...options,
       background: this.mods.background,
       renderOptions: this.options,

@@ -2,7 +2,7 @@ const { build } = require('esbuild')
 
 build({
   bundle: true,
-  target: ['node16'],
+  target: ['node12'],
   format: 'cjs',
   sourcemap: 'external',
   outdir: 'lib',

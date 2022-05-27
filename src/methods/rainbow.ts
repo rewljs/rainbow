@@ -4,12 +4,6 @@ import type { SegmentOptions } from '../impl/render'
 
 interface RainbowOptions {
   /**
-   * Whether the rainbow color should be applied to background.
-   *
-   * @default false
-   */
-  background: boolean
-  /**
    * Offset of the starting hue. Default to 0 (starts from red).
    *
    * Would be a random number if set to 'random'.
@@ -38,11 +32,17 @@ interface RainbowOptions {
    */
   s: number
   /**
-   * Value (or Brightness)
+   * Value (or Brightness).
    *
    * @default 95
    */
   v: number
+  /**
+   * Whether the rainbow color should be applied to background.
+   *
+   * @default false
+   */
+  background: boolean
   /**
    * Styles to be applied.
    *
@@ -54,9 +54,9 @@ interface RainbowOptions {
 /**
  * Render rainbow color to the content using provided style.
  *
- * @param content Content to be styled
- * @param options Options for the rainbow color
- * @returns Styled content
+ * @param content Content to be rendered
+ * @param options Options for the color method
+ * @returns Rendered content
  */
 const rainbow = (content: string, options?: Partial<RainbowOptions>): string => {
   const val: RainbowOptions = {
