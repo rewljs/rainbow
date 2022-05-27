@@ -1,5 +1,3 @@
-/* eslint-disable no-control-regex */
-
 import type { ColorTuple } from './types'
 
 const segmentStyles = [

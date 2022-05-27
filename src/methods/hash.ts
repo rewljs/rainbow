@@ -6,7 +6,7 @@ interface HashOptions {
   /**
    * Saturation (or its range).
    *
-   * Could be a number or an array of `[min_value, max_value]`
+   * Could be a number or an array of `[minValue, maxValue]`
    *
    * @default [80, 100]
    */
@@ -14,7 +14,7 @@ interface HashOptions {
   /**
    * Value (or Brightness) (or its range).
    *
-   * Could be a number or an array of `[min_value, max_value]`
+   * Could be a number or an array of `[minValue, maxValue]`
    *
    * @default [80, 100]
    */
@@ -38,7 +38,7 @@ const getBase = (n: number | [number, number]): number => {
 }
 
 const getRange = (n: number | [number, number]): number => {
-  return typeof n === 'number' ? 0 : n[1] - n[0]
+  return typeof n === 'number' ? 1 : n[1] - n[0] + 1
 }
 
 /**
@@ -70,7 +70,7 @@ const hash = (content: string, options?: Partial<HashOptions>): string => {
   const scope = 360 * range.s * range.v
   let hash = scope
   for (let i = 0; i < content.length; i++) {
-    hash = (hash << 3) + content.charCodeAt(i)
+    hash = (hash << 3) | content.charCodeAt(i)
     hash %= scope
   }
 

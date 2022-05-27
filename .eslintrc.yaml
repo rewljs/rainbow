@@ -28,6 +28,7 @@ rules:
   '@typescript-eslint/no-namespace': off
   '@typescript-eslint/no-empty-interface': off
   'ava/no-ignored-test-files': off
+  no-control-regex: off
 
   # Set some rules from error to warining
   '@typescript-eslint/no-empty-function': warn
