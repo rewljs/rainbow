@@ -1,4 +1,5 @@
 import type { ColorTuple } from './types'
+import type { ContextChain } from '../context'
 
 const segmentStyles = [
   'bold',
@@ -79,6 +80,10 @@ const render = (s: Segment): string => {
   return start + content + end
 }
 
+interface StyleMethods extends
+  Record<SegmentStyles, ContextChain> {
+}
+
 export default render
 export { segmentStyles, expandStyle }
-export type { SegmentOptions, SegmentStyles, SegmentStylesDeduped }
+export type { SegmentOptions, SegmentStyles, StyleMethods }

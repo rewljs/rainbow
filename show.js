@@ -1,11 +1,12 @@
-import r, { ColorList } from './src'
+const r = require('./index')
+const { ColorList } = require('./index')
 
 const width = 80
 const space = 10
 const column = Math.floor(width / space)
 
-const pad = (str: string) => ' '.repeat(space - str.length)
-const cap = (str: string) => str[0].toUpperCase() + str.slice(1)
+const pad = str => ' '.repeat(space - str.length)
+const cap = str => str[0].toUpperCase() + str.slice(1)
 
 const title = 'All Available Preset Colors'
 
@@ -16,7 +17,7 @@ console.log(
   r.gray(' ---'),
 )
 
-const showColors = (colors: typeof ColorList, set?: 'dark' | 'light') => {
+const showColors = (colors, set) => {
   let line = ''
   let count = 0
 

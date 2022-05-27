@@ -1,5 +1,5 @@
 import render, { segmentStyles, expandStyle } from './impl/render'
-import type { SegmentOptions, SegmentStyles } from './impl/render'
+import type { SegmentOptions, SegmentStyles, StyleMethods } from './impl/render'
 import Colors, { ColorList } from './colors'
 import type { ColorMethods, ColorSet, AllColorNames, AllColors } from './colors'
 
@@ -9,7 +9,7 @@ import type { RainbowOptions } from './methods/rainbow'
 
 interface ContextChain {
   /**
-   * Construct options chain.
+   * Render content using current options chain.
    *
    * @param content Content to be rendered
    * @returns rendered content
@@ -23,16 +23,12 @@ interface ContextChain {
   (): Context
 }
 
-interface StyleMethods extends
-  Record<SegmentStyles, ContextChain> {
+interface OptionsMethods extends StyleMethods, ColorMethods {
 }
 
-interface GeneratedMethods extends StyleMethods, ColorMethods {
-}
-
-interface Context extends GeneratedMethods {
+interface Context extends OptionsMethods {
   /**
-   * Render text using current options chain.
+   * Render content using current options chain.
    *
    * @param content Content to be rendered
    * @returns rendered content
@@ -77,10 +73,10 @@ class Context extends Function {
   }
 
   /**
-   * Style content using current style chaining.
+   * Render content using current options chain.
    *
-   * @param content Content to be styled
-   * @returns Styled content
+   * @param content Content to be rendered
+   * @returns Rendered content
    */
   render(content: string): string {
     return render({ ...this.options, content })
@@ -116,7 +112,7 @@ class Context extends Function {
   }
 
   /**
-   * Set next color to be applied on background.
+   * Set next color call to be applied on background.
    */
   get bg() {
     this.mods.background = true
@@ -125,7 +121,7 @@ class Context extends Function {
   }
 
   /**
-   * Set next color to be dark colors.
+   * Set next color call to be dark colors.
    */
   get dark() {
     this.mods.colorSet = 'dark'
@@ -134,7 +130,7 @@ class Context extends Function {
   }
 
   /**
-   * Set next color to be light colors.
+   * Set next color call to be light colors.
    */
   get light() {
     this.mods.colorSet = 'light'
@@ -162,7 +158,7 @@ class Context extends Function {
    * @param h Hue (0 - 360)
    * @param s Saturation (0 - 100)
    * @param v Value (or Brightness) (0 - 100)
-   * @returns
+   * @returns Options chain
    */
   hsv(h: number, s: number, v: number) {
     this.options.color = hsv2rgb(h, s, v)
@@ -176,9 +172,9 @@ class Context extends Function {
    * Can only be the last method in the chain, and overrides the previous
    * chained color.
    *
-   * @param content Content to be styled
+   * @param content Content to be rebdered
    * @param options Options for the rainbow color
-   * @returns Styled content
+   * @returns Rendered content
    */
   rainbow(content: string, options?: Partial<RainbowOptions>) {
     return rainbow(content, {
@@ -189,4 +185,4 @@ class Context extends Function {
 }
 
 export default Context
-export type { ContextChain, GeneratedMethods }
+export type { ContextChain, OptionsMethods }

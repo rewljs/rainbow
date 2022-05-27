@@ -44,4 +44,4 @@ type AllColors = Record<AllColorNames, string>
 export default Colors
 export { ColorList }
 export type { ColorMethods, ColorSet }
-export type { AllColorNames, AllColors }
+export type { AllColors, AllColorNames }
