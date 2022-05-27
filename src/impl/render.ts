@@ -1,7 +1,8 @@
 import type { ColorTuple } from './types'
-import type { ContextChain } from '../context'
 
 const segmentStyles = [
+  'reset',
+  'r',
   'bold',
   'b',
   'dim',
@@ -18,10 +19,12 @@ const segmentStyles = [
 
 type SegmentStyles = typeof segmentStyles[number]
 
-type SegmentStylesDeduped = Exclude<SegmentStyles, 'b' | 'i' | 'u' | 's'>
+type SegmentStylesDeduped = Exclude<SegmentStyles, 'r' | 'b' | 'i' | 'u' | 's'>
 
 const expandStyle = (style: SegmentStyles): SegmentStylesDeduped => {
   switch (style) {
+    case 'r':
+      return 'reset'
     case 'b':
       return 'bold'
     case 'i':
@@ -50,6 +53,7 @@ type Segment = SegmentContent & SegmentOptions
 const render = (s: Segment): string => {
   let ctrl = '\x1b['
 
+  if (s.reset) ctrl += '0m\x1b[0;'
   if (s.bold) ctrl += '1;'
   if (s.dim) ctrl += '2;'
   if (s.italic) ctrl += '3;'
@@ -67,12 +71,15 @@ const render = (s: Segment): string => {
 
   // Return unaltered string if no style is passed.
   if (ctrl === '\x1b[') return s.content
-
   ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'
 
   // Append the parsed escape sequence to the end of existing reset sequences.
-  // eslint-disable-next-line no-control-regex
-  const content = s.content.replace(/\x1b\[0m(?!\x1b|$)/g, `\x1b[0m${ctrl}`)
+  let content = s.content
+
+  if (ctrl != '\x1b[0m\x1b[0m') {
+    // eslint-disable-next-line no-control-regex
+    content = content.replace(/(?<!\x1b\[0m)\x1b\[0m(?!\x1b\[0)/g, `\x1b[0m${ctrl}`)
+  }
 
   const start = content.startsWith('\x1b[') ? '' : ctrl
   const end = content.endsWith('\x1b[0m') ? '' : '\x1b[0m'
@@ -80,10 +87,6 @@ const render = (s: Segment): string => {
   return start + content + end
 }
 
-interface StyleMethods extends
-  Record<SegmentStyles, ContextChain> {
-}
-
 export default render
 export { segmentStyles, expandStyle }
-export type { SegmentOptions, SegmentStyles, StyleMethods }
+export type { SegmentOptions, SegmentStyles, SegmentStylesDeduped }

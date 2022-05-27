@@ -62,7 +62,7 @@ test('Render orange text inside blue text inside pink text', t => {
     content: `outside ${middle} outside`,
     color: [245, 130, 185],
   })
-  t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
+  t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
 test('Render orange text left to blue text inside pink text', t => {
@@ -78,7 +78,7 @@ test('Render orange text left to blue text inside pink text', t => {
     content: `outside ${middle} outside`,
     color: [245, 130, 185],
   })
-  t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
+  t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;70;200;255mmiddle \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m\x1b[38;2;70;200;255m\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
 test('Render orange text right to blue text inside pink text', t => {
@@ -94,7 +94,7 @@ test('Render orange text right to blue text inside pink text', t => {
     content: `outside ${middle} outside`,
     color: [245, 130, 185],
   })
-  t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
+  t.is(outside, '\x1b[38;2;245;130;185moutside \x1b[38;2;255;130;30minside\x1b[0m\x1b[38;2;245;130;185m\x1b[38;2;70;200;255m middle\x1b[0m\x1b[38;2;245;130;185m outside\x1b[0m')
 })
 
 test('Render text with orange background', t => {
@@ -111,6 +111,18 @@ test('Render text with orange background with direct color code', t => {
     background: '2;255;130;30',
   })
   t.is(rendered, '\x1b[48;2;255;130;30mtext\x1b[0m')
+})
+
+test('Render text with style reset', t => {
+  const inside = render({
+    content: 'inside',
+    reset: true,
+  })
+  const outside = render({
+    content: `outside ${inside} outside`,
+    color: [255, 130, 30],
+  })
+  t.is(outside, '\x1b[38;2;255;130;30moutside \x1b[0m\x1b[0minside\x1b[0m\x1b[38;2;255;130;30m outside\x1b[0m')
 })
 
 test('Render bold text', t => {

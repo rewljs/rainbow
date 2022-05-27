@@ -1,5 +1,5 @@
 import render, { segmentStyles, expandStyle } from './impl/render'
-import type { SegmentOptions, SegmentStyles, StyleMethods } from './impl/render'
+import type { SegmentOptions, SegmentStyles } from './impl/render'
 import Colors, { ColorList } from './colors'
 import type { ColorMethods, ColorSet, AllColorNames, AllColors } from './colors'
 
@@ -21,6 +21,9 @@ interface ContextChain {
    * @returns Options chain
    */
   (): Context
+}
+
+interface StyleMethods extends Record<SegmentStyles, ContextChain> {
 }
 
 interface OptionsMethods extends StyleMethods, ColorMethods {
@@ -50,9 +53,9 @@ class Context extends Function {
   /**
    * Rendering options, including styles and colors.
    */
-  options: SegmentOptions = {}
+  options: SegmentOptions
 
-  private mods: ContextModifier = defaultContextModifier
+  private mods: ContextModifier = { ...defaultContextModifier }
 
   constructor(options: SegmentOptions = {}) {
     super()
@@ -102,7 +105,7 @@ class Context extends Function {
       if (this.mods.background) this.options.background = set[color]
       else this.options.color = set[color]
 
-      this.mods = defaultContextModifier
+      this.mods = { ...defaultContextModifier }
 
       if (content) return this.render(content)
       return this

@@ -16,7 +16,7 @@ const palette = new Palette(defaultColors)
   .define('purple', 265, 80, 70)
   .define('violet', 280, 80, 65)
   .define('magenta', 300, 70, 65)
-  .define('pink', 322, 60, 65)
+  .define('pink', 322, 50, 60)
   .define('brown', 25, 90, 40)
 
 export default palette
