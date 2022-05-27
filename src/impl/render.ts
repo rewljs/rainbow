@@ -1,8 +1,9 @@
+/* eslint-disable no-control-regex */
+
 import type { ColorTuple } from './types'
 
 const segmentStyles = [
   'reset',
-  'r',
   'bold',
   'b',
   'dim',
@@ -19,12 +20,10 @@ const segmentStyles = [
 
 type SegmentStyles = typeof segmentStyles[number]
 
-type SegmentStylesDeduped = Exclude<SegmentStyles, 'r' | 'b' | 'i' | 'u' | 's'>
+type SegmentStylesDeduped = Exclude<SegmentStyles, 'b' | 'i' | 'u' | 's'>
 
 const expandStyle = (style: SegmentStyles): SegmentStylesDeduped => {
   switch (style) {
-    case 'r':
-      return 'reset'
     case 'b':
       return 'bold'
     case 'i':
@@ -53,7 +52,10 @@ type Segment = SegmentContent & SegmentOptions
 const render = (s: Segment): string => {
   let ctrl = '\x1b['
 
+  // A trick is used here that uses '\x1b[0m\x1b[0' to identify whether the
+  // escape sequence is the start or the end of the segment.
   if (s.reset) ctrl += '0m\x1b[0;'
+
   if (s.bold) ctrl += '1;'
   if (s.dim) ctrl += '2;'
   if (s.italic) ctrl += '3;'
@@ -73,18 +75,20 @@ const render = (s: Segment): string => {
   if (ctrl === '\x1b[') return s.content
   ctrl = ctrl.slice(0, ctrl.length - 1) + 'm'
 
-  // Append the parsed escape sequence to the end of existing reset sequences.
   let content = s.content
 
   if (ctrl != '\x1b[0m\x1b[0m') {
-    // eslint-disable-next-line no-control-regex
+    // Append the parsed escape sequence to the end of existing reset sequences.
     content = content.replace(/(?<!\x1b\[0m)\x1b\[0m(?!\x1b\[0)/g, `\x1b[0m${ctrl}`)
   }
 
   const start = content.startsWith('\x1b[') ? '' : ctrl
-  const end = content.endsWith('\x1b[0m') ? '' : '\x1b[0m'
+  let rendered = start + content + '\x1b[0m'
 
-  return start + content + end
+  // Delete escape sequence between two \x1b[0m.
+  rendered = rendered.replace(/\x1b\[0m(\x1b\[[0-9;]+m)+\x1b\[0m/g, '\x1b[0m')
+
+  return rendered
 }
 
 export default render
