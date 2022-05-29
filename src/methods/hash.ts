@@ -42,7 +42,7 @@ const getRange = (n: number | [number, number]): number => {
 }
 
 /**
- * Render
+ * Apply color according to the provided content.
  *
  * @param content Content to be rendered
  * @param options Options for the color method

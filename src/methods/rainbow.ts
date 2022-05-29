@@ -12,7 +12,7 @@ interface RainbowOptions {
    */
   offset: number | 'random'
   /**
-   * Whether the direction of spectrum is reversed.
+   * Whether the direction of the spectrum should be reversed.
    *
    * i.e. red -> orange if not reversed, red -> purple if reversed.
    *
@@ -20,7 +20,7 @@ interface RainbowOptions {
    */
   reverse: boolean
   /**
-   * Hue span. Default to 360 degree.
+   * Hue span (in degree). Default to 360 (the whole spectrum).
    *
    * @default 360
    */
@@ -52,7 +52,7 @@ interface RainbowOptions {
 }
 
 /**
- * Render rainbow color to the content using provided style.
+ * Apply rainbow color to the content using provided style.
  *
  * @param content Content to be rendered
  * @param options Options for the color method

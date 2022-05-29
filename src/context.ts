@@ -172,7 +172,7 @@ class Context extends Function {
   }
 
   /**
-   * Render rainbow color to content using current style chaining.
+   * Apply rainbow color to content using current style chaining.
    *
    * Can only be the last method in the chain, and overrides the previous
    * chained color. `bg` modifier can be chained before this method.
@@ -190,7 +190,7 @@ class Context extends Function {
   }
 
   /**
-   * Render color according to the provided content.
+   * Apply color according to the provided content.
    *
    * Color would be the same if the content is the same.
    *
