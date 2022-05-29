@@ -1,10 +1,14 @@
 {
   "name": "@rewl/rainbow",
   "version": "1.0.0",
-  "description": "True Color display in console with no fallback.",
+  "description": "True Color display in terminal with no fallback.",
   "author": "i'DLisT <me@idl.ist> (https://idl.ist)",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "color",
+    "console",
+    "terminal"
+  ],
   "homepage": "https://github.com/rewljs/rainbow#readme",
   "repository": {
     "type": "git",

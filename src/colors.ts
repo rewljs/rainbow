@@ -29,19 +29,22 @@ type U2I<U> = (U extends unknown ? (k: U) => void : never) extends ((k: infer I)
 
 type ColorSet = keyof TColor
 
-type AllColorNames = keyof U2I<TColor[keyof TColor]>
+type AllColors = keyof U2I<TColor[keyof TColor]>
 
+/**
+ * List of all available colors.
+ */
 const ColorList = [...new Set<string>([
   ...defaultColors.names,
   ...bwColors.names,
   ...grayColors.names,
   ...darkColors.names,
   ...lightColors.names,
-])] as AllColorNames[]
+])] as AllColors[]
 
-type AllColors = Record<AllColorNames, string>
+type AllColorsObject = Record<AllColors, string>
 
 export default Colors
 export { ColorList }
 export type { ColorMethods, ColorSet }
-export type { AllColors, AllColorNames }
+export type { AllColorsObject, AllColors }

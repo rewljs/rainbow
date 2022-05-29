@@ -1,3 +1,4 @@
+import hsv2rgb from './impl/hsv2rgb'
 import Context from './context'
 import type { OptionsMethods } from './context'
 import render, { segmentStyles, expandStyle } from './impl/render'
@@ -111,5 +112,13 @@ interface Rainbow extends OptionsMethods {
   hash: typeof hash
 }
 
+/**
+ * Terminal color renderer.
+ */
 export default Rainbow as unknown as Rainbow
+
 export { ColorList }
+
+export { hsv2rgb }
+
+export { render }

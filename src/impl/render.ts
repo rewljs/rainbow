@@ -47,6 +47,12 @@ interface SegmentContent {
 
 type Segment = SegmentContent & SegmentOptions
 
+/**
+ * Base renderer.
+ *
+ * @param s Segment object including its content and options (colors, styles, etc.)
+ * @returns Rendered content
+ */
 const render = (s: Segment): string => {
   let ctrl = '\x1b['
 

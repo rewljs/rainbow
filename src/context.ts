@@ -1,7 +1,7 @@
 import render, { segmentStyles, expandStyle } from './impl/render'
 import type { SegmentOptions, SegmentStyles } from './impl/render'
 import Colors, { ColorList } from './colors'
-import type { ColorMethods, ColorSet, AllColorNames, AllColors } from './colors'
+import type { ColorMethods, ColorSet, AllColors, AllColorsObject } from './colors'
 
 import hsv2rgb from './impl/hsv2rgb'
 import rainbow from './methods/rainbow'
@@ -69,7 +69,7 @@ class Context extends Function {
     })
 
     ColorList.forEach(color => {
-      this.createColorMethod(color as AllColorNames)
+      this.createColorMethod(color as AllColors)
     })
 
     return new Proxy(this, {
@@ -99,9 +99,9 @@ class Context extends Function {
     this[style] = method as ContextChain
   }
 
-  private createColorMethod(color: AllColorNames): void {
+  private createColorMethod(color: AllColors): void {
     const method = (content?: string) => {
-      let set = Colors[this.mods.colorSet] as AllColors
+      let set = Colors[this.mods.colorSet] as AllColorsObject
       if (!set[color]) set = Colors.default
 
       if (this.mods.background) this.options.background = set[color]
