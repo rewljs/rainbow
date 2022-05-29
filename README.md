@@ -44,15 +44,14 @@ Among these options, **styles** and **colors** are functions and should always b
 
 #### Styles
 
-Those styles are supported:
+These styles are supported:
 
 ```
 bold (b), italic (i), underline (u), strikethrough (s)
-
 dim, blink, inverse, hidden, reset
 ```
 
-Calling those methods with no arguments returns the options chain, and calling them with the string would finish the chaining and return the rendered content.
+Calling those methods with no arguments continues the options chain, and calling them with the string would finish the chaining and return the rendered content.
 
 ```js
 // Render content with current options chaining.
@@ -62,7 +61,7 @@ console.log(r.b('Bold text'))
 console.log(r.b().red('Red bold text'))
 ```
 
-Styles can be nesting.
+Styles can be nested.
 
 ```js
 // The word 'italic' would be both underlined and italic.
@@ -77,4 +76,23 @@ console.log(r.red(`Red text but ${r.reset('these texts are reset')} and these ar
 
 #### Colors
 
-As shown in showcase, these colors are presetted in this library:
+These colors are presetted:
+
+##### Color group
+```
+red, orange, honey, yellow, lemon, olive
+green, mint, cyan, sky, blue, purple
+violet, magenta, pink, brown
+```
+
+##### Grayscale group
+```
+black, gray / grey (*1), white
+v0, v10, v20, ..., v100 (*2)
+```
+
+\*1 Both spellings are the same (50% value).
+
+\*2 `v` represents `value`, and those are colors where hue and saturation are 0 and value is as in their name. To be more specific, `v0` = `black`, `v50` = `gray` and `v100` = `white`
+
+Commonly used terminal color names are covered, with some additional preferred colors.
