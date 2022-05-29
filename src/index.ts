@@ -119,6 +119,6 @@ export default Rainbow as unknown as Rainbow
 
 export { ColorList }
 
-export { hsv2rgb }
-
 export { render }
+
+export { hsv2rgb }
