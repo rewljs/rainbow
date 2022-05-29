@@ -8,7 +8,7 @@ interface HashOptions {
    *
    * Could be a number or an array of `[minValue, maxValue]`
    *
-   * @default [80, 100]
+   * @default [60, 100]
    */
   s: number | [number, number]
   /**
@@ -20,7 +20,7 @@ interface HashOptions {
    */
   v: number | [number, number]
   /**
-   * Whether the color should be applied to background.
+   * Whether the color should be applied to background or not.
    *
    * @default false
    */

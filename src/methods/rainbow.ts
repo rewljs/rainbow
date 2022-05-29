@@ -38,7 +38,7 @@ interface RainbowOptions {
    */
   v: number
   /**
-   * Whether the rainbow color should be applied to background.
+   * Whether the rainbow color should be applied to background or not.
    *
    * @default false
    */
