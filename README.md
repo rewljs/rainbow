@@ -36,29 +36,23 @@ console.log(r.orange().bg.dark.blue('Orange text with dark blue background'))
 console.log(r.u().rainbow('Rainbow text with underline color'))
 ```
 
-### Chainable Methods
+## Chainable Methods
 
-**Styles**, **colors** and **modifiers** are chainable.
+**Styles**, **Colors** and **Modifiers** are chainable.
 
-Among these options, **styles** and **colors** are functions and should always be called, whereas **modifiers** are getters.
+**Styles** and **Colors** are functions and should always be called, whereas **Modifiers** are getters.
 
-#### Styles
+**Styles** and **Colors** called with no arguments continues the options chain, and calling them with the string would finish the chaining and return the rendered content.
+
+**Modifiers** are getters and cannot be called as function. Using them would always continue the chaining.
+
+### Styles
 
 These styles are supported:
 
 ```
 bold (b), italic (i), underline (u), strikethrough (s)
 dim, blink, inverse, hidden, reset
-```
-
-Calling those methods with no arguments continues the options chain, and calling them with the string would finish the chaining and return the rendered content.
-
-```js
-// Render content with current options chaining.
-console.log(r.b('Bold text'))
-
-// Continue options chaining.
-console.log(r.b().red('Red bold text'))
 ```
 
 Styles can be nested.
@@ -68,31 +62,80 @@ Styles can be nested.
 console.log(r.u(`underlined ${r.i('italic')} text`))
 ```
 
-Notably, `reset` would only reset the color inside it.
+Notably, `reset` would only reset the styles **inside** it.
 
 ```js
 console.log(r.red(`Red text but ${r.reset('these texts are reset')} and these are not.`))
 ```
 
-#### Colors
+### Colors
 
 These colors are presetted:
 
-##### Color group
+#### Color group
 ```
-red, orange, honey, yellow, lemon, olive
-green, mint, cyan, sky, blue, purple
-violet, magenta, pink, brown
+red, orange, honey, yellow, lemon, olive, green, mint,
+cyan, sky, blue, purple, violet, magenta, pink, brown
 ```
 
-##### Grayscale group
+#### Grayscale group
 ```
 black, gray / grey (*1), white
 v0, v10, v20, ..., v100 (*2)
 ```
 
-\*1 Both spellings are the same (50% value).
+**\*1** Both spellings are okay.
 
-\*2 `v` represents `value`, and those are colors where hue and saturation are 0 and value is as in their name. To be more specific, `v0` = `black`, `v50` = `gray` and `v100` = `white`
+**\*2** `v` represents `value`, and those are colors where hue and saturation are 0 and value is as in their name. To be specific, `v0` = `black`, `v50` = `gray` and `v100` = `white`
 
-Commonly used terminal color names are covered, with some additional preferred colors.
+Commonly used terminal color names are covered.
+
+Like styles, colors can also be nested, and the color of the same field (text or background) would be overrided.
+
+```js
+// The word 'yellow' would have both yellow color and violet background.
+console.log(r.bg.violet(`Violet background with ${r.yellow('yellow')} text inside`))
+
+// The word 'blue' would be overrided to blue.
+console.log(r.red(`Red text with ${r.blue('blue')} text inside`))
+```
+
+### Modifiers
+
+There are currently three modifiers, **bg**, **dark** and **light**.
+
+**bg** is to modify where the color should apply.
+
+**dark** and **light** is to decide which color sets are used for next color call.
+
+After a **Color** method is called, the state of all modifiers would be reset, and should be chained again if they are to be applied to next color call.
+
+#### bg
+
+`bg` modifier would make the next color method to be applied to background.
+
+```js
+console.log(r.bg.red('Text with red background'))
+```
+
+#### dark
+
+`dark` midifier would make the next color method applies dark color (as shown in [showcase](#showcase)).
+
+If a color does not have a dark version (e.g. `black` and `white`), it would fallback to its default color.
+
+It differs from `dim` that `dark` colors are chosen by hand.
+
+```js
+console.log(r.dark.blue('Text with dark blue color'))
+```
+
+#### light
+
+`dark` midifier would make the next color method applies light color (as shown in [showcase](#showcase)).
+
+If a color does not have a light version (e.g. `black` and `white`), it would fallback to its default color.
+
+```js
+console.log(r.light.pink('Text with light pink color'))
+```
