@@ -232,7 +232,7 @@ Convert HSV value to RGB value.
 
 ## Changelog
 
-See [changelog](./docs/changelog_v1.md)
+See [changelog](./docs/changelog_v1.md).
 
 ## About `@rewl`
 

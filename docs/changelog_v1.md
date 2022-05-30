@@ -2,7 +2,7 @@
 
 ## v1.0.1
 
-- Adjust export sctructure for better compatility.
+- Adjust export sctructure for better compatibility.
 - Adjust some colors.
 - Tolerate number input (numbers would be `toString()`ed first instead of cause error).
 
