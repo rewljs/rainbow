@@ -42,9 +42,9 @@ console.log(r.u().rainbow('Rainbow text with underline color'))
 
 ## Chainable Methods
 
-**Styles**, **Colors** and **Modifiers** are chainable.
+**Styles**, **colors** and **modifiers** are chainable.
 
-**Styles** and **Colors** are functions.
+**Styles** and **colors** are functions.
 
 - Calling them with no arguments continue the chaining.
 - Calling them with a string would finish the chaining and return the rendered content.
@@ -101,11 +101,36 @@ console.log(r.bg.violet(`Violet background with ${r.yellow('yellow')} text insid
 console.log(r.red(`Red text with ${r.blue('blue')} text inside`))
 ```
 
+### Custom colors
+
+Custom colors could be applied using following methods, and they have the same properties of presetted color methods.
+
+#### rgb(r, g, b)
+
+- `r, g, b`: RGB values. R, G, B ∈ [0, 255] and should be integers.
+
+Create a custom color using red, green, blue value.
+
+```js
+// Single-line usage.
+console.log(r.rgb(255, 130, 2)('Orange text'))
+
+// Store the customized color for later use.
+const orange = r.rgb(255, 130, 2)
+console.log(orange('Orange text'))
+```
+
+#### hsv(h, s, v)
+
+- `h, s, v`: HSV values. H ∈ [0, 360], S ∈ [0, 100], V ∈ [0, 100].
+
+Create a custom color using hue, saturation and value (or brightness). Works like [rgb](#rgbr-g-b).
+
 ### Modifiers
 
 There are currently three modifiers, **bg**, **dark** and **light**.
 
-After a **Color** method is called, the state of **all modifiers** would be reset, and should be chained again if they are to be applied to next color call.
+After a [**color**](#colors) method is called, the state of **all modifiers** would be reset, and should be chained again if they are to be applied to next color call.
 
 #### bg
 
@@ -136,14 +161,6 @@ If a color does not have a light version (e.g. grayscales), it would fall back t
 ```js
 console.log(r.light.pink('Text with light pink color'))
 ```
-
-### Custom colors
-
-Custom colors can be created using following methods:
-
-### rgb(r, g, b)
-
-### hsv(h, s, v)
 
 ## Non-chainable methods
 
@@ -201,15 +218,21 @@ r1 === r2 // true
 
 Some utilities are also exported in case they are needed.
 
-### render(s: Segment)
+### render(segment)
 
 The base renderer used in this module. The implementation is [here](./src/impl/render.ts).
 
-### hsv2rgb(h: number, s: number, v: number)
+### hsv2rgb(h, s, v)
+
+- `h, s, v`: HSV values. H ∈ [0, 360], S ∈ [0, 100], V ∈ [0, 100].
 
 Returns (`[number, number, number]`): Converted RGB value.
 
 Convert HSV value to RGB value.
+
+## Changelog
+
+See [changelog](./docs/changelog_v1.md)
 
 ## About `@rewl`
 

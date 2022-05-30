@@ -1,6 +1,6 @@
 {
   "name": "@rewl/rainbow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "True Color display in terminal with no fallback.",
   "author": "i'DLisT <me@idl.ist> (https://idl.ist)",
   "license": "MIT",
