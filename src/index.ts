@@ -31,6 +31,12 @@ const Rainbow: Record<string, unknown> = {
   rainbow: rainbow,
 
   hash: hash,
+
+  hsv2rgb: hsv2rgb,
+
+  render: render,
+
+  ColorList: ColorList,
 }
 
 segmentStyles.forEach(style => {
@@ -110,15 +116,29 @@ interface Rainbow extends OptionsMethods {
    * @returns Rendered content
    */
   hash: typeof hash
+
+  /**
+   * Convert HSV color to RGB color.
+   *
+   * @param h Hue (0 - 360)
+   * @param s Saturation (0 - 100)
+   * @param v Value (or Brightness) (0 - 100)
+   * @return Red, Green, Blue value as integer (0 - 255)
+   */
+  hsv2rgb: typeof hsv2rgb
+
+  /**
+   * Base renderer.
+   *
+   * @param s Segment object including its content and options (colors, styles, etc.)
+   * @returns Rendered content
+   */
+  render: typeof render
+
+  ColorList: typeof ColorList
 }
 
 /**
  * Terminal color renderer.
  */
 export default Rainbow as unknown as Rainbow
-
-export { ColorList }
-
-export { render }
-
-export { hsv2rgb }

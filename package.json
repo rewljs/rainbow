@@ -20,7 +20,7 @@
   "files": [
     "lib",
     "index.js",
-    "show.js"
+    "index.d.ts"
   ],
   "main": "index.js",
   "scripts": {

@@ -42,7 +42,7 @@ interface SegmentOptions extends Partial<SegmentStylesOptions> {
 }
 
 interface SegmentContent {
-  content: string
+  content: string | number
 }
 
 type Segment = SegmentContent & SegmentOptions
@@ -55,6 +55,9 @@ type Segment = SegmentContent & SegmentOptions
  */
 const render = (s: Segment): string => {
   let ctrl = '\x1b['
+
+  // Tolerate pure number input.
+  if (typeof s.content === 'number') s.content = s.content.toString()
 
   // A trick is used here that uses '\x1b[0m\x1b[0' to identify whether the
   // escape sequence is the start or the end of the segment.
