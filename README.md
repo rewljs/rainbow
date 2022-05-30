@@ -164,7 +164,7 @@ console.log(r.light.pink('Text with light pink color'))
 
 ## Non-chainable methods
 
-These methods can only be the last method in the chain, and some [**Modifiers**](#modifiers) do not have effect on them.
+These methods can only be the last method in the chain, and only some [**modifiers**](#modifiers) have effect on them.
 
 ### rainbow(content, options?)
 
